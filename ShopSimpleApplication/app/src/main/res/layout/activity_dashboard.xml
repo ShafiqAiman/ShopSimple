@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    tools:context=".Dashboard"
+    android:background="#fff">
+
+    <ImageView
+        android:id="@+id/logo_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/logo"
+        android:paddingTop="-20dp"/>
+
+    <TextView
+        android:id="@+id/logo_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome back!"
+        android:textSize="30sp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/raleway_medium_italic"
+        />
+
+    <TextView
+        android:id="@+id/slogan_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="50dp"
+        android:textSize="18sp"
+        android:fontFamily="@font/raleway_thin"/>
+
+
+    <Button
+        android:id="@+id/scan_barcode"
+        android:layout_width="238dp"
+        android:layout_height="55dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="50dp"
+        android:background="#55b599"
+        android:elevation="4dp"
+        android:text="Scan Barcode"
+        android:textColor="#fff" />
+
+    <Button
+
+        android:id="@+id/purchase_history"
+        android:text="Purchase History"
+        android:textColor="#060606"
+        android:layout_width="238dp"
+        android:layout_height="55dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="20dp"
+        android:background="#55b599"/>
+
+    <Button
+        android:id="@+id/logoutBtn"
+        android:text="Log Out"
+        android:layout_width="238dp"
+        android:layout_height="55dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="20dp"
+        android:background="#55b599"/>
+
+
+</LinearLayout>
