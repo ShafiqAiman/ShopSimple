@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "729103820921",
+    "firebase_url": "https://entah-fa4c9.firebaseio.com",
+    "project_id": "entah-fa4c9",
+    "storage_bucket": "entah-fa4c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729103820921:android:51e8a7b90086c1f8144ca8",
+        "android_client_info": {
+          "package_name": "com.example.qrandbarcodescanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "729103820921-lkntga3e3jjg5s7g759i72doo9a0fcfp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.qrandbarcodescanner",
+            "certificate_hash": "2774338e8d60aeefab1bfc4e51a7d8235b95d31a"
+          }
+        },
+        {
+          "client_id": "729103820921-5vrk8t2i0dt5mln55lv96ttp05vep89l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvLwzEJH_JflJJBQ4_mlMfLiH2srQgzTM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "729103820921-5vrk8t2i0dt5mln55lv96ttp05vep89l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
