@@ -65,31 +65,62 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null){
             if(result.getContents()!=null){
-
                 //String x = result.getContents();
-                if (result.getContents()!= null)
-                    y = result.getContents();
+                y = result.getContents();
                 if(!y.isEmpty()){
-                    id.child(y).addValueEventListener(new ValueEventListener() {
+                    id.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Product product = dataSnapshot.getValue(Product.class);
-                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                            builder.setMessage("Product ID: "+y+"\nProduct Name: "+product.getName()+"\nPrice: "+product.getPrice());
-                            builder.setTitle("Scanning Result");
-                            builder.setPositiveButton("Add To Cart", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    scanCode();
-                                }
-                            }).setNegativeButton("Finish", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    finish();
-                                }
-                            });
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
+                            if(dataSnapshot.child(y).exists()){
+                                id.child(y).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        Product product = dataSnapshot.getValue(Product.class);
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                        builder.setMessage("Product ID: "+y+"\nProduct Name: "+product.getName()+"\nPrice: "+product.getPrice());
+                                        builder.setTitle("Scanning Result");
+                                        builder.setPositiveButton("Add To Cart", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                scanCode();
+                                            }
+                                        }).setNegativeButton("Finish", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                finish();
+                                            }
+                                        });
+                                        AlertDialog dialog = builder.create();
+                                        dialog.show();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                            }else{
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                builder.setMessage("Product cannot be found in database.");
+                                //Toast.makeText(MainActivity.this, y, Toast.LENGTH_SHORT).show();
+                                builder.setTitle("Scanning Result");
+                                builder.setPositiveButton("Scan Again", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        scanCode();
+                                    }
+                                }).setNegativeButton("Finish", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        finish();
+                                    }
+                                });
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            }
+
                         }
 
                         @Override
