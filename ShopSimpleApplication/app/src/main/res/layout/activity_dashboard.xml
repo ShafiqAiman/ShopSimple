@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,71 +10,96 @@
     tools:context=".Dashboard"
     android:background="#fff">
 
+
     <ImageView
         android:id="@+id/logo_image"
         android:layout_width="150dp"
         android:layout_height="150dp"
+        android:paddingTop="-20dp"
         android:src="@drawable/logo"
-        android:paddingTop="-20dp"/>
+         />
+
 
     <TextView
         android:id="@+id/logo_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/raleway_medium_italic"
         android:text="Welcome back!"
         android:textSize="30sp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="15dp"
-        android:fontFamily="@font/raleway_medium_italic"
-        />
-
-    <TextView
-        android:id="@+id/slogan_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="50dp"
-        android:textSize="18sp"
-        android:fontFamily="@font/raleway_thin"/>
-
+        tools:layout_editor_absoluteX="27dp"
+        tools:layout_editor_absoluteY="188dp" />
 
     <Button
         android:id="@+id/scan_barcode"
         android:layout_width="238dp"
         android:layout_height="55dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="80dp"
-        android:layout_marginTop="50dp"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="false"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="100dp"
         android:background="#55b599"
         android:elevation="4dp"
         android:text="Scan Barcode"
-        android:textColor="#fff" />
+        android:textColor="#fff"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="77dp"
+        tools:layout_editor_absoluteY="303dp" />
 
     <Button
 
         android:id="@+id/purchase_history"
-        android:text="Purchase History"
-        android:textColor="#060606"
         android:layout_width="238dp"
         android:layout_height="55dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="80dp"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="false"
+        android:layout_marginLeft="70dp"
         android:layout_marginTop="20dp"
-        android:background="#55b599"/>
+        android:background="#55b599"
+        android:text="Purchase History"
+        android:textColor="#060606"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="77dp"
+        tools:layout_editor_absoluteY="384dp" />
 
     <Button
         android:id="@+id/logoutBtn"
-        android:text="Log Out"
         android:layout_width="238dp"
         android:layout_height="55dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="80dp"
+        android:layout_marginLeft="70dp"
         android:layout_marginTop="20dp"
-        android:background="#55b599"/>
+        android:background="#55b599"
+        android:text="Log Out"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="77dp"
+        tools:layout_editor_absoluteY="469dp" />
 
+    <TextView
+        android:id="@+id/verifyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="15dp"
+        android:text="EMAIL NOT VERIFIED"
+        android:textColor="#FC0000"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="128dp"
+        tools:layout_editor_absoluteY="377dp" />
+
+    <Button
+        android:id="@+id/verifyBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="145dp"
+        android:layout_marginTop="10dp"
+        android:text="VERIFY"
+        android:textColor="#000000"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="152dp"
+        tools:layout_editor_absoluteY="419dp" />
 
 </LinearLayout>
