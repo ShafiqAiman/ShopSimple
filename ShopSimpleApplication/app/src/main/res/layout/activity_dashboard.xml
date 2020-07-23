@@ -33,7 +33,7 @@
         tools:layout_editor_absoluteY="188dp" />
 
     <Button
-        android:id="@+id/scan_barcode"
+        android:id="@+id/toScan"
         android:layout_width="238dp"
         android:layout_height="55dp"
         android:layout_alignParentLeft="false"

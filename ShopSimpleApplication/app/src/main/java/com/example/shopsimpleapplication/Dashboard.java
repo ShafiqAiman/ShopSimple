@@ -16,10 +16,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.zxing.client.android.Intents;
 
 public class Dashboard extends AppCompatActivity {
 
-    Button callLogOut, verifyBtn;
+    Button callLogOut, verifyBtn, callScan;
     TextView verifyText;
     FirebaseAuth fAuth;
     String userId;
@@ -30,6 +31,18 @@ public class Dashboard extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_dashboard);
 
+
+        callScan = findViewById(R.id.toScan);
+
+        callScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View vi) {
+                Intent intent = new Intent(Dashboard.this, ScanBarcode.class);
+                startActivity(intent);
+
+            }
+        });
+
         callLogOut = findViewById(R.id.logoutBtn);
 
         callLogOut.setOnClickListener(new View.OnClickListener() {
@@ -39,9 +52,12 @@ public class Dashboard extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), Login.class));
                 finish();
 
+
             }
 
         });
+
+
 
         fAuth =FirebaseAuth.getInstance();
 
