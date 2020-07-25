@@ -25,7 +25,7 @@ import com.google.zxing.integration.android.IntentResult;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     FirebaseDatabase database;
-    DatabaseReference id;
+    DatabaseReference id, order;
     Button scanBtn;
     String y = "";
 
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         database = FirebaseDatabase.getInstance();
         id = database.getReference("Product");
+        order = database.getReference("Cart");
 
         scanBtn = findViewById(R.id.scanBtn);
         scanBtn.setOnClickListener(MainActivity.this);
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -75,13 +77,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 id.child(y).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        Product product = dataSnapshot.getValue(Product.class);
+                                        final Product product = dataSnapshot.getValue(Product.class);
                                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                                         builder.setMessage("Product ID: "+y+"\nProduct Name: "+product.getName()+"\nPrice: "+product.getPrice());
                                         builder.setTitle("Scanning Result");
                                         builder.setPositiveButton("Add To Cart", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                order.addValueEventListener(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                        Product cart = new Product(product.getName(),product.getPrice());
+                                                        order.child(y).setValue(cart);
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                    }
+                                                });
+                                                Toast.makeText(MainActivity.this,"Item is added",Toast.LENGTH_SHORT).show();
                                                 scanCode();
                                             }
                                         }).setNegativeButton("Finish", new DialogInterface.OnClickListener() {
