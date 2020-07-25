@@ -11,6 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ScanBarcode"></activity>
+        <activity android:name=".PurchaseHistory" />
         <activity android:name=".SignUp" />
         <activity android:name=".Login" />
         <activity android:name=".Dashboard" />

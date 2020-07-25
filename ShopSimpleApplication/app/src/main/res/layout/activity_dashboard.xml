@@ -58,7 +58,7 @@
         android:layout_marginLeft="70dp"
         android:layout_marginTop="20dp"
         android:background="#55b599"
-        android:text="Purchase History"
+        android:text="Toast"
         android:textColor="#060606"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="77dp"

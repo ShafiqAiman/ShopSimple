@@ -20,7 +20,7 @@ import com.google.zxing.client.android.Intents;
 
 public class Dashboard extends AppCompatActivity {
 
-    Button callLogOut, verifyBtn, callScan;
+    Button callLogOut, verifyBtn, callScan, callToast;
     TextView verifyText;
     FirebaseAuth fAuth;
     String userId;
@@ -38,6 +38,17 @@ public class Dashboard extends AppCompatActivity {
             @Override
             public void onClick(View vi) {
                 Intent intent = new Intent(Dashboard.this, ScanBarcode.class);
+                startActivity(intent);
+
+            }
+        });
+
+        callToast = findViewById(R.id.purchase_history);
+
+        callToast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View vi) {
+                Intent intent = new Intent(Dashboard.this, PurchaseHistory.class);
                 startActivity(intent);
 
             }
