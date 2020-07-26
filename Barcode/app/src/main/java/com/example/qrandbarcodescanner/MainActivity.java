@@ -22,13 +22,9 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity{
 
-    FirebaseDatabase database;
-    DatabaseReference id, order;
     Button scanBtn;
-    String y = "";
-
 
     private static final String TAG = "MyActivity";
     @Override
@@ -36,132 +32,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        database = FirebaseDatabase.getInstance();
-        id = database.getReference("Product");
-        order = database.getReference("Cart");
-
         scanBtn = findViewById(R.id.scanBtn);
-        scanBtn.setOnClickListener(MainActivity.this);
-
-    }
-
-    @Override
-    public void onClick(View view) {
-        scanCode();
-    }
-
-    private void scanCode(){
-
-        IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
-        integrator.setCaptureActivity(CaptureAct.class);
-        integrator.setOrientationLocked(false);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-        integrator.setPrompt("Scanning Code");
-        integrator.initiateScan();
-
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null){
-            if(result.getContents()!=null){
-                //String x = result.getContents();
-                y = result.getContents();
-                if(!y.isEmpty()){
-                    id.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.child(y).exists()){
-                                id.child(y).addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        final Product product = dataSnapshot.getValue(Product.class);
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                                        builder.setMessage("Product ID: "+y+"\nProduct Name: "+product.getName()+"\nPrice: "+product.getPrice());
-                                        builder.setTitle("Scanning Result");
-                                        builder.setPositiveButton("Add To Cart", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                                                order.addValueEventListener(new ValueEventListener() {
-                                                    @Override
-                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                        Product cart = new Product(product.getName(),product.getPrice());
-                                                        order.child(y).setValue(cart);
-                                                    }
-
-                                                    @Override
-                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                                    }
-                                                });
-                                                Toast.makeText(MainActivity.this,"Item is added",Toast.LENGTH_SHORT).show();
-                                                scanCode();
-                                            }
-                                        }).setNegativeButton("Finish", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                finish();
-                                            }
-                                        });
-                                        AlertDialog dialog = builder.create();
-                                        dialog.show();
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-                            }else{
-
-                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                                builder.setMessage("Product cannot be found in database.");
-                                //Toast.makeText(MainActivity.this, y, Toast.LENGTH_SHORT).show();
-                                builder.setTitle("Scanning Result");
-                                builder.setPositiveButton("Scan Again", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        scanCode();
-                                    }
-                                }).setNegativeButton("Finish", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        finish();
-                                    }
-                                });
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-
-                //Compare(productid);
-
+        //scanBtn.setOnClickListener(MainActivity.this);
+        scanBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent productDetails = new Intent(MainActivity.this,ProductDetails.class);
+                startActivity(productDetails);
 
             }
-            else {
-                Toast.makeText(MainActivity.this, "No Results", Toast.LENGTH_LONG).show();
-            }
-        }
-        else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-
+        });
 
     }
-
-
-
 
 }
