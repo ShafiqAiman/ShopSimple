@@ -3,13 +3,15 @@ package com.example.qrandbarcodescanner.Model;
 public class Product {
     private String Name;
     private String Price;
+    private String Image;
 
     public Product() {
     }
 
-    public Product(String name, String price) {
+    public Product(String name, String price, String image) {
         Name = name;
         Price = price;
+        Image = image;
     }
 
     public String getName() {
@@ -26,5 +28,13 @@ public class Product {
 
     public void setPrice(String price) {
         Price = price;
+    }
+
+    public String getImage() {
+        return Image;
+    }
+
+    public void setImage(String image) {
+        Image = image;
     }
 }

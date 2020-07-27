@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.squareup.picasso.Picasso;
 
 public class ProductDetails extends AppCompatActivity {
 
@@ -81,13 +82,15 @@ public class ProductDetails extends AppCompatActivity {
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         final Product product = dataSnapshot.getValue(Product.class);
 
+                                        Picasso.with(getBaseContext()).load(product.getImage())
+                                                .into(productImage);
                                         productName.setText(product.getName());
                                         productPrice.setText(product.getPrice());
 
                                         addToCartButton.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                Product cart = new Product(product.getName(),product.getPrice());
+                                                Product cart = new Product(product.getImage(),product.getName(),product.getPrice());
                                                 order.child(y).setValue(cart);
                                                 Toast.makeText(ProductDetails.this,"Item is added",Toast.LENGTH_SHORT).show();
                                                 scanCode();

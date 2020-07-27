@@ -34,6 +34,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.4'
     implementation'com.journeyapps:zxing-android-embedded:3.4.0'
     implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 
 }
 apply plugin: 'com.google.gms.google-services'
