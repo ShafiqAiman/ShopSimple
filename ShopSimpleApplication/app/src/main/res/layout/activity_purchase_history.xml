@@ -50,5 +50,21 @@
         tools:layout_editor_absoluteX="77dp"
         tools:layout_editor_absoluteY="303dp" />
 
+    <Button
+        android:id="@+id/payBtn"
+        android:layout_width="238dp"
+        android:layout_height="55dp"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="false"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="100dp"
+        android:background="#55b599"
+        android:elevation="4dp"
+        android:text="Proceed to Payment"
+        android:textColor="#fff"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="77dp"
+        tools:layout_editor_absoluteY="303dp" />
+
 
 </LinearLayout>
