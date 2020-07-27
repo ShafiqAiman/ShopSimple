@@ -24,7 +24,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 public class MainActivity extends AppCompatActivity{
 
-    Button scanBtn;
+    Button scanBtn, cartBtn;
 
     private static final String TAG = "MyActivity";
     @Override
@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
 
         scanBtn = findViewById(R.id.scanBtn);
+        cartBtn = findViewById(R.id.cart);
         //scanBtn.setOnClickListener(MainActivity.this);
         scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +44,14 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+        cartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cartDetails = new Intent(MainActivity.this,CartActivity.class);
+                startActivity(cartDetails);
+
+            }
+        });
     }
 
 }

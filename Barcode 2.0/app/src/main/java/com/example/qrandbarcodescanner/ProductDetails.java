@@ -33,7 +33,7 @@ public class ProductDetails extends AppCompatActivity {
     private Button addToCartButton;
     private ImageView productImage;
     private ElegantNumberButton numberButton;
-    private TextView productPrice, productDescription, productName;
+    private TextView productPrice, productName;
 
 
     @Override
@@ -48,7 +48,6 @@ public class ProductDetails extends AppCompatActivity {
         numberButton = (ElegantNumberButton)findViewById(R.id.number_btn);
         productImage = (ImageView)findViewById(R.id.product_image_details);
         productName = (TextView)findViewById(R.id.product_name_details);
-        productDescription = (TextView)findViewById(R.id.product_description_details);
         productPrice = (TextView)findViewById(R.id.product_price_details);
         addToCartButton = (Button)findViewById(R.id.add_to_cart_button);
         scanCode();
@@ -90,7 +89,7 @@ public class ProductDetails extends AppCompatActivity {
                                         addToCartButton.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                Product cart = new Product(product.getImage(),product.getName(),product.getPrice());
+                                                Product cart = new Product(product.getName(),product.getPrice(), product.getImage());
                                                 order.child(y).setValue(cart);
                                                 Toast.makeText(ProductDetails.this,"Item is added",Toast.LENGTH_SHORT).show();
                                                 scanCode();
