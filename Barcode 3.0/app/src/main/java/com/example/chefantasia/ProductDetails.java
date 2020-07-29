@@ -86,7 +86,7 @@ public class ProductDetails extends AppCompatActivity {
                                         Picasso.with(getBaseContext()).load(product.getImage())
                                                 .into(productImage);
                                         productName.setText(product.getName());
-                                        productPrice.setText(product.getPrice());
+                                        productPrice.setText("RM "+product.getPrice());
                                         productId.setText(product.getId());
 
                                         addToCartButton.setOnClickListener(new View.OnClickListener() {
