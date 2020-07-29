@@ -1,6 +1,7 @@
 package com.example.chefantasia.ViewHolder;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.example.chefantasia.R;
 public class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public TextView productNAME,productPRICE, productQUANTITY;
+    public Button deleteBtn;
 
 
     private ItemClickListener itemClickListener;
@@ -24,6 +26,7 @@ public class CartViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         productNAME = (TextView)itemView.findViewById(R.id.cart_productName);
         productPRICE = (TextView)itemView.findViewById(R.id.cart_productPrice);
         productQUANTITY = (TextView)itemView.findViewById(R.id.cart_productQuantity);
+        deleteBtn = (Button)itemView.findViewById(R.id.deleteBtn);
 
         itemView.setOnClickListener(this);
     }

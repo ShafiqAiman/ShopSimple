@@ -4,14 +4,16 @@ public class Product {
     private String Name;
     private String Price;
     private String Image;
+    private String Id;
 
     public Product() {
     }
 
-    public Product(String name, String price, String image) {
+    public Product(String name, String price, String image, String id) {
         Name = name;
         Price = price;
         Image = image;
+        Id = id;
     }
 
     public String getName() {
@@ -36,5 +38,13 @@ public class Product {
 
     public void setImage(String image) {
         Image = image;
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
     }
 }
