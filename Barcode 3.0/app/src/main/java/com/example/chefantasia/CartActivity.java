@@ -60,8 +60,8 @@ public class CartActivity extends AppCompatActivity {
                 cartViewHolder.deleteBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(CartActivity.this,cart.getName(),Toast.LENGTH_SHORT).show();
                         Cart.child(cart.getId()).removeValue();
+                        Toast.makeText(CartActivity.this,"This item is removed.",Toast.LENGTH_SHORT).show();
                     }
                 });
 
