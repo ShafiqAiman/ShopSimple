@@ -13,65 +13,36 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class ScanBarcode extends AppCompatActivity implements View.OnClickListener{
+public class ScanBarcode extends AppCompatActivity{
 
-    Button scanBtn;
+    Button scanBtn, cartBtn;
 
+    private static final String TAG = "MyActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_barcode);
 
         scanBtn = findViewById(R.id.scanBtn);
-        scanBtn.setOnClickListener(this);
-
-    }
-
-    @Override
-    public void onClick(View view) {
-        scanCode();
-    }
-
-    private void scanCode(){
-
-        IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.setCaptureActivity(CaptureAct.class);
-        integrator.setOrientationLocked(false);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-        integrator.setPrompt("Scanning Code");
-        integrator.initiateScan();
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null){
-            if(result.getContents()!=null){
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(result.getContents());
-                builder.setTitle("Scanning Result");
-                builder.setPositiveButton("Scan Again", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        scanCode();
-                    }
-                }).setNegativeButton("Finish", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+        cartBtn = findViewById(R.id.cart);
+        //scanBtn.setOnClickListener(MainActivity.this);
+        scanBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent productDetails = new Intent(ScanBarcode.this,ProductDetails.class);
+                startActivity(productDetails);
 
             }
-            else {
-                Toast.makeText(this, "No Results", Toast.LENGTH_LONG).show();
+        });
+
+        cartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cartDetails = new Intent(ScanBarcode.this,CartActivity.class);
+                startActivity(cartDetails);
+
             }
-        }
-        else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
+        });
     }
+
 }

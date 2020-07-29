@@ -39,7 +39,7 @@
         android:layout_alignParentLeft="false"
         android:layout_alignParentTop="false"
         android:layout_marginLeft="70dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="40dp"
         android:background="#55b599"
         android:elevation="4dp"
         android:text="Scan Barcode"
@@ -77,6 +77,20 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="77dp"
         tools:layout_editor_absoluteY="469dp" />
+
+    <Button
+        android:id="@+id/receiptgen"
+        android:layout_width="238dp"
+        android:layout_height="55dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="20dp"
+        android:background="#55b599"
+        android:text="Receipts"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="77dp"
+        tools:layout_editor_absoluteY="600dp" />
 
     <TextView
         android:id="@+id/verifyText"

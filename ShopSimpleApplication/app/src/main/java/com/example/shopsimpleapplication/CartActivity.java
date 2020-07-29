@@ -1,48 +1,43 @@
 package com.example.shopsimpleapplication;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+        import androidx.annotation.Nullable;
+        import androidx.appcompat.app.AppCompatActivity;
+        import androidx.recyclerview.widget.LinearLayoutManager;
+        import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+        import android.app.Activity;
+        import android.content.Intent;
+        import android.net.Uri;
+        import android.os.Bundle;
+        import android.util.Log;
+        import android.view.View;
+        import android.widget.Button;
+        import android.widget.TextView;
+        import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
-import com.paypal.android.sdk.payments.PayPalAuthorization;
-import com.paypal.android.sdk.payments.PayPalConfiguration;
-import com.paypal.android.sdk.payments.PayPalFuturePaymentActivity;
-import com.paypal.android.sdk.payments.PayPalPayment;
-import com.paypal.android.sdk.payments.PayPalService;
-import com.paypal.android.sdk.payments.PaymentActivity;
-import com.paypal.android.sdk.payments.PaymentConfirmation;
+        import com.example.shopsimpleapplication.ViewHolder.CartViewHolder;
+        import com.google.firebase.database.DatabaseReference;
+        import com.google.firebase.database.FirebaseDatabase;
+        import com.firebase.ui.database.FirebaseRecyclerAdapter;
+        import com.paypal.android.sdk.payments.PayPalAuthorization;
+        import com.paypal.android.sdk.payments.PayPalConfiguration;
+        import com.paypal.android.sdk.payments.PayPalFuturePaymentActivity;
+        import com.paypal.android.sdk.payments.PayPalPayment;
+        import com.paypal.android.sdk.payments.PayPalService;
+        import com.paypal.android.sdk.payments.PaymentActivity;
+        import com.paypal.android.sdk.payments.PaymentConfirmation;
 
-import org.json.JSONException;
+        import org.json.JSONException;
 
-import java.math.BigDecimal;
+        import java.math.BigDecimal;
 
-import org.w3c.dom.Text;
+public class CartActivity extends AppCompatActivity {
 
-public class PurchaseHistory extends AppCompatActivity {
-
-    FirebaseAuth fAuth;
-    FirebaseFirestore fStore;
-    String userId;
-    TextView uphone;
-    Button toastCall, pay;
-    private static final String TAG = "paymentExample";
-
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private Button pay;
+    private TextView txtTotalAmount;
     public static final String PAYPAL_KEY = "AR3w-xzDaAq8p815GtutTJiuuCyLkMAIZ8VAVL8DwVflii_os8ItcqoBIJLgowbHog1QinPPSXDMHyvc";
 
     private static final int REQUEST_CODE_PAYMENT = 1;
@@ -52,60 +47,45 @@ public class PurchaseHistory extends AppCompatActivity {
     PayPalPayment thingsToBuy;
 
 
+    FirebaseRecyclerAdapter<com.example.shopsimpleapplication.Model.Cart, CartViewHolder>adapter;
+
+    FirebaseDatabase database;
+    DatabaseReference Cart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_purchase_history);
+        setContentView(R.layout.activity_food_list);
 
-        uphone = findViewById(R.id.phone);
+        recyclerView = findViewById(R.id.cart_list);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
-        fAuth = FirebaseAuth.getInstance();
-        fStore = FirebaseFirestore.getInstance();
+        //pay = (Button) findViewById(R.id.payBtn);
+        txtTotalAmount = (TextView) findViewById(R.id.total_price);
 
-        userId = fAuth.getCurrentUser().getUid();
+        database = FirebaseDatabase.getInstance();
+        Cart = database.getReference("Cart");
 
-        DocumentReference documentReference = fStore.collection("users").document(userId);
-                documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+        loadCart();
 
-                uphone.setText(documentSnapshot.getString("PhoneNo"));
+        pay =(Button)findViewById(R.id.payBtn);
+        pay.setOnClickListener(new View.OnClickListener()
 
-                final String a = documentSnapshot.getString("PhoneNo");
-                toastCall = findViewById(R.id.toast);
+        {
 
-                toastCall.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(PurchaseHistory.this, "User Phone Number : " + a, Toast.LENGTH_SHORT).show();
-                    }
+            @Override
+            public void onClick (View v){
 
-                });
-
+                MakePayment();
             }
+
         });
 
+        configPayPal();
 
-
-
-
-
-    pay =(Button)findViewById(R.id.payBtn);
-    pay.setOnClickListener(new View.OnClickListener()
-
-    {
-
-        @Override
-        public void onClick (View v){
-
-        MakePayment();
     }
-
-    });
-
-    configPayPal();
-
-}
 
     private void configPayPal() {
 
@@ -146,6 +126,9 @@ public class PurchaseHistory extends AppCompatActivity {
                         System.out.println(confirm.toJSONObject().toString(4));
                         System.out.println(confirm.getPayment().toJSONObject().toString(4));
                         Toast.makeText(this, "Payment Successful", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(this,receipt.class);
+                        startActivity(intent);
+
                     } catch (JSONException e) {
 
                         Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
@@ -186,5 +169,19 @@ public class PurchaseHistory extends AppCompatActivity {
             }
         }
     }
-}
 
+
+    private void loadCart(){
+        adapter = new FirebaseRecyclerAdapter<com.example.shopsimpleapplication.Model.Cart, CartViewHolder>(com.example.shopsimpleapplication.Model.Cart.class, R.layout.cart_items_layout, CartViewHolder.class, Cart) {
+            @Override
+            protected void populateViewHolder(CartViewHolder cartViewHolder, com.example.shopsimpleapplication.Model.Cart cart, int i) {
+                cartViewHolder.productNAME.setText(cart.getName());
+                cartViewHolder.productPRICE.setText(cart.getPrice());
+                cartViewHolder.productQUANTITY.setText(cart.getQuantity());
+            }
+        };
+        recyclerView.setAdapter(adapter);
+    }
+
+
+}
