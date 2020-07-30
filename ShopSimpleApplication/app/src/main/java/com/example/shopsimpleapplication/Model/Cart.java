@@ -4,14 +4,16 @@ public class Cart {
     private String Name;
     private String Price;
     private String Quantity;
+    private String Id;
 
     public Cart() {
     }
 
-    public Cart(String name, String price, String quantity) {
+    public Cart(String name, String price, String quantity, String id) {
         Name = name;
         Price = price;
         Quantity = quantity;
+        Id = id;
     }
 
     public String getName() {
@@ -36,5 +38,13 @@ public class Cart {
 
     public void setQuantity(String quantity) {
         Quantity = quantity;
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
     }
 }

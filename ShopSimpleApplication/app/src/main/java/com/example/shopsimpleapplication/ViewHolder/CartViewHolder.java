@@ -1,6 +1,7 @@
 package com.example.shopsimpleapplication.ViewHolder;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,7 +14,7 @@ import com.example.shopsimpleapplication.R;
 public class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public TextView productNAME,productPRICE, productQUANTITY;
-
+    public Button deleteBtn;
 
     private ItemClickListener itemClickListener;
 
@@ -23,6 +24,7 @@ public class CartViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         productNAME = (TextView)itemView.findViewById(R.id.cart_productName);
         productPRICE = (TextView)itemView.findViewById(R.id.cart_productPrice);
         productQUANTITY = (TextView)itemView.findViewById(R.id.cart_productQuantity);
+        deleteBtn = (Button)itemView.findViewById(R.id.deleteBtn);
 
         itemView.setOnClickListener(this);
     }

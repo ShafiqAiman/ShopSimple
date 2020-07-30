@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.example.shopsimpleapplication.Model.Cart;
 import com.example.shopsimpleapplication.Model.Product;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,7 +34,7 @@ public class ProductDetails extends AppCompatActivity {
     private Button addToCartButton;
     private ImageView productImage;
     private ElegantNumberButton numberButton;
-    private TextView productPrice, productName;
+    private TextView productPrice, productName, productId;
 
 
     @Override
@@ -49,6 +50,7 @@ public class ProductDetails extends AppCompatActivity {
         productImage = (ImageView)findViewById(R.id.product_image_details);
         productName = (TextView)findViewById(R.id.product_name_details);
         productPrice = (TextView)findViewById(R.id.product_price_details);
+        productId = (TextView)findViewById(R.id.product_ID);
         addToCartButton = (Button)findViewById(R.id.add_to_cart_button);
         scanCode();
 
@@ -84,12 +86,13 @@ public class ProductDetails extends AppCompatActivity {
                                         Picasso.with(getBaseContext()).load(product.getImage())
                                                 .into(productImage);
                                         productName.setText(product.getName());
-                                        productPrice.setText(product.getPrice());
+                                        productPrice.setText("RM "+product.getPrice());
+                                        productId.setText(product.getId());
 
                                         addToCartButton.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                Product cart = new Product(product.getName(),product.getPrice(), product.getImage());
+                                                Cart cart = new Cart(product.getName(),product.getPrice(), numberButton.getNumber(),product.getId());
                                                 order.child(y).setValue(cart);
                                                 Toast.makeText(ProductDetails.this,"Item is added",Toast.LENGTH_SHORT).show();
                                                 scanCode();

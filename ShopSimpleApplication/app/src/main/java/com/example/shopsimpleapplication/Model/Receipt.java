@@ -1,18 +1,18 @@
 package com.example.shopsimpleapplication.Model;
 
-public class Product {
+public class Receipt {
     private String Name;
     private String Price;
-    private String Image;
+    private String Quantity;
     private String Id;
 
-    public Product() {
+    public Receipt() {
     }
 
-    public Product(String name, String price, String image, String id) {
+    public Receipt(String name, String price, String quantity, String id) {
         Name = name;
         Price = price;
-        Image = image;
+        Quantity = quantity;
         Id = id;
     }
 
@@ -32,12 +32,12 @@ public class Product {
         Price = price;
     }
 
-    public String getImage() {
-        return Image;
+    public String getQuantity() {
+        return Quantity;
     }
 
-    public void setImage(String image) {
-        Image = image;
+    public void setQuantity(String quantity) {
+        Quantity = quantity;
     }
 
     public String getId() {

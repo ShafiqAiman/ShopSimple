@@ -28,6 +28,7 @@ import org.json.JSONException;
 
 
 import com.example.shopsimpleapplication.Model.Cart;
+import com.example.shopsimpleapplication.Model.Receipt;
 import com.example.shopsimpleapplication.ViewHolder.CartViewHolder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -52,17 +53,18 @@ public class receipt extends AppCompatActivity {
 
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
+    FirebaseDatabase database;
+    DatabaseReference Cart;
     FirebaseStorage fStorage;
     String userId;
     Button createButton;
     Date dateObj;
     DateFormat dateFormat;
     int pageWidth = 1200;
-    FirebaseDatabase database;
-    DatabaseReference Cart;
     String CustName, CustPhone;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
+    FirebaseRecyclerAdapter<com.example.shopsimpleapplication.Model.Receipt, CartViewHolder>adapter;
 
 
     @Override
@@ -70,12 +72,22 @@ public class receipt extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receipt);
 
+        recyclerView = findViewById(R.id.cart_list);
+
         createButton = findViewById(R.id.create_Button);
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         fStorage = FirebaseStorage.getInstance();
 
         userId = fAuth.getCurrentUser().getUid();
+
+        Intent intent = getIntent();
+        String totalPrice = intent.getStringExtra(CartActivity.EXTRA_TEXT);
+
+
+
+
+
 
 
         //Cart = database.getReference("Cart");
@@ -94,10 +106,14 @@ public class receipt extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
 
+       //loadCartDetails();
         createPDF();
 
-        
+
     }
+
+
+
 
 
     private void createPDF() {
@@ -106,7 +122,7 @@ public class receipt extends AppCompatActivity {
             @Override
             public void onClick(View vi) {
 
-                Toast.makeText(receipt.this, "Receipt Downloaded" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(receipt.this, "Receipt Downloaded", Toast.LENGTH_SHORT).show();
 
                 dateObj = new Date();
 
@@ -160,7 +176,11 @@ public class receipt extends AppCompatActivity {
                 canvas.drawLine(880, 820, 880, 850, myPaint);
                 canvas.drawLine(1030, 820, 1030, 850, myPaint);
 
-                //loadCart();
+                //canvas.drawText("" + productNAME, 20, 590, myPaint);
+                //canvas.drawText("" + productPRICE, 20, 640, myPaint);
+                //canvas.drawText("" + productQUANTITY, 20, 640, myPaint);
+
+
 
 
                 myPdfDocument.finishPage(myPage1);
@@ -179,18 +199,8 @@ public class receipt extends AppCompatActivity {
             }
         });
     }
+
+
+
+
 }
-
-    /*private void loadCart() {
-        FirebaseRecyclerAdapter<com.example.shopsimpleapplication.Model.Cart, CartViewHolder> adapter = new FirebaseRecyclerAdapter<com.example.shopsimpleapplication.Model.Cart, CartViewHolder>(Cart.class, R.layout.cart_items_layout, CartViewHolder.class, Cart) {
-            @Override
-            protected void populateViewHolder(CartViewHolder cartViewHolder, Cart cart, int i) {
-                cartViewHolder.productNAME.setText(cart.getName());
-                cartViewHolder.productPRICE.setText(cart.getPrice());
-                cartViewHolder.productQUANTITY.setText(cart.getQuantity());
-            }
-        };
-        recyclerView.setAdapter(adapter);
-
-    }
-}*/

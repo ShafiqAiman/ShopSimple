@@ -31,13 +31,18 @@ package com.example.shopsimpleapplication;
         import org.json.JSONException;
 
         import java.math.BigDecimal;
+        import java.text.DecimalFormat;
 
 public class CartActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private Button pay;
-    private TextView txtTotalAmount;
+    private TextView TotalAmount;
+
+    private double TotalPrice = 0.00;
+    public static final String EXTRA_TEXT = "com.example.shopsimpleapplication.EXTRA_TEXT";
+
     public static final String PAYPAL_KEY = "AR3w-xzDaAq8p815GtutTJiuuCyLkMAIZ8VAVL8DwVflii_os8ItcqoBIJLgowbHog1QinPPSXDMHyvc";
 
     private static final int REQUEST_CODE_PAYMENT = 1;
@@ -50,12 +55,12 @@ public class CartActivity extends AppCompatActivity {
     FirebaseRecyclerAdapter<com.example.shopsimpleapplication.Model.Cart, CartViewHolder>adapter;
 
     FirebaseDatabase database;
-    DatabaseReference Cart;
+    DatabaseReference Cart, delete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_food_list);
+        setContentView(R.layout.activity_cart_activity);
 
         recyclerView = findViewById(R.id.cart_list);
         recyclerView.setHasFixedSize(true);
@@ -63,7 +68,7 @@ public class CartActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         //pay = (Button) findViewById(R.id.payBtn);
-        txtTotalAmount = (TextView) findViewById(R.id.total_price);
+        TotalAmount = (TextView) findViewById(R.id.total_price);
 
         database = FirebaseDatabase.getInstance();
         Cart = database.getReference("Cart");
@@ -85,6 +90,8 @@ public class CartActivity extends AppCompatActivity {
 
         configPayPal();
 
+        //fx to empty the cart
+
     }
 
     private void configPayPal() {
@@ -104,7 +111,7 @@ public class CartActivity extends AppCompatActivity {
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         startService(intent);
 
-        thingsToBuy = new PayPalPayment(new BigDecimal(String.valueOf("10.45")), "MYR", "Payment", PayPalPayment.PAYMENT_INTENT_SALE);
+        thingsToBuy = new PayPalPayment(new BigDecimal(String.valueOf(""+ TotalPrice)), "MYR", "Payment", PayPalPayment.PAYMENT_INTENT_SALE);
         Intent payment = new Intent(this, PaymentActivity.class);
         payment.putExtra(PaymentActivity.EXTRA_PAYMENT, thingsToBuy);
         payment.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
@@ -127,6 +134,7 @@ public class CartActivity extends AppCompatActivity {
                         System.out.println(confirm.getPayment().toJSONObject().toString(4));
                         Toast.makeText(this, "Payment Successful", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(this,receipt.class);
+                        intent.putExtra(EXTRA_TEXT, TotalPrice);
                         startActivity(intent);
 
                     } catch (JSONException e) {
@@ -174,10 +182,31 @@ public class CartActivity extends AppCompatActivity {
     private void loadCart(){
         adapter = new FirebaseRecyclerAdapter<com.example.shopsimpleapplication.Model.Cart, CartViewHolder>(com.example.shopsimpleapplication.Model.Cart.class, R.layout.cart_items_layout, CartViewHolder.class, Cart) {
             @Override
-            protected void populateViewHolder(CartViewHolder cartViewHolder, com.example.shopsimpleapplication.Model.Cart cart, int i) {
+            protected void populateViewHolder(CartViewHolder cartViewHolder, final com.example.shopsimpleapplication.Model.Cart cart, final int i) {
                 cartViewHolder.productNAME.setText(cart.getName());
-                cartViewHolder.productPRICE.setText(cart.getPrice());
+                cartViewHolder.productPRICE.setText("RM "+cart.getPrice());
                 cartViewHolder.productQUANTITY.setText(cart.getQuantity());
+
+                Double DProductPrice = ((Double.valueOf(cart.getPrice()))) * (Double.valueOf(cart.getQuantity()));
+                TotalPrice = TotalPrice + DProductPrice;
+                DecimalFormat df2 = new DecimalFormat("#.##");
+
+                TotalAmount.setText("Total Price = RM"+String.valueOf(df2.format(TotalPrice)));
+                //final Cart local = cart;
+
+                cartViewHolder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Cart.child(cart.getId()).removeValue();
+                        Toast.makeText(CartActivity.this,"This item is removed.",Toast.LENGTH_SHORT).show();
+
+                        Double DProductPrice = ((Double.valueOf(cart.getPrice()))) * (Double.valueOf(cart.getQuantity()));
+                        TotalPrice = TotalPrice - DProductPrice;
+                        DecimalFormat df2 = new DecimalFormat("#.##");
+                        TotalAmount.setText("Total Price = RM"+String.valueOf(df2.format(TotalPrice)));
+                    }
+                });
+
             }
         };
         recyclerView.setAdapter(adapter);
