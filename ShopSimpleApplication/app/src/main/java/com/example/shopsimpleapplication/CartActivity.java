@@ -195,7 +195,7 @@ public class CartActivity extends AppCompatActivity {
 
                 Double DProductPrice = ((Double.valueOf(cart.getPrice()))) * (Double.valueOf(cart.getQuantity()));
                 TotalPrice = TotalPrice + DProductPrice;
-                DecimalFormat df2 = new DecimalFormat("#.##");
+                DecimalFormat df2 = new DecimalFormat("#.00");
 
                 TotalAmount.setText("Total Price = RM"+String.valueOf(df2.format(TotalPrice)));
                 //final Cart local = cart;
@@ -208,7 +208,7 @@ public class CartActivity extends AppCompatActivity {
 
                         Double DProductPrice = ((Double.valueOf(cart.getPrice()))) * (Double.valueOf(cart.getQuantity()));
                         TotalPrice = TotalPrice - DProductPrice;
-                        DecimalFormat df2 = new DecimalFormat("#.##");
+                        DecimalFormat df2 = new DecimalFormat("#.00");
                         TotalAmount.setText("Total Price = RM"+String.valueOf(df2.format(TotalPrice)));
                         //Amount = TotalAmount.getText().toString();
                     }
