@@ -73,7 +73,7 @@
         android:layout_marginLeft="70dp"
         android:layout_marginTop="20dp"
         android:background="#55b599"
-        android:text="RECEIPTS"
+        android:text="dont press here"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="77dp"
         tools:layout_editor_absoluteY="469dp" />

@@ -9,6 +9,7 @@ package com.example.shopsimpleapplication;
         import android.content.Intent;
         import android.net.Uri;
         import android.os.Bundle;
+        import android.os.Parcelable;
         import android.util.Log;
         import android.view.View;
         import android.widget.Button;
@@ -41,7 +42,8 @@ public class CartActivity extends AppCompatActivity {
     private TextView TotalAmount;
 
     private double TotalPrice = 0.00;
-    public static final String EXTRA_TEXT = "com.example.shopsimpleapplication.EXTRA_TEXT";
+    private static String Amount = "";
+    public static final String EXTRA_NUMBER= "com.example.shopsimpleapplication.EXTRA_TEXT";
 
     public static final String PAYPAL_KEY = "AR3w-xzDaAq8p815GtutTJiuuCyLkMAIZ8VAVL8DwVflii_os8ItcqoBIJLgowbHog1QinPPSXDMHyvc";
 
@@ -133,8 +135,12 @@ public class CartActivity extends AppCompatActivity {
                         System.out.println(confirm.toJSONObject().toString(4));
                         System.out.println(confirm.getPayment().toJSONObject().toString(4));
                         Toast.makeText(this, "Payment Successful", Toast.LENGTH_LONG).show();
+
+                        DecimalFormat df = new DecimalFormat("#,###,##0.00");
+                        //priceTotal = df.format(TotalPrice);
+                        //Double priceTotal = Double.parseDouble(String.valueOf(TotalPrice));
                         Intent intent = new Intent(this,receipt.class);
-                        intent.putExtra(EXTRA_TEXT, TotalPrice);
+                        intent.putExtra(EXTRA_NUMBER, df.format(TotalPrice));
                         startActivity(intent);
 
                     } catch (JSONException e) {
@@ -204,6 +210,7 @@ public class CartActivity extends AppCompatActivity {
                         TotalPrice = TotalPrice - DProductPrice;
                         DecimalFormat df2 = new DecimalFormat("#.##");
                         TotalAmount.setText("Total Price = RM"+String.valueOf(df2.format(TotalPrice)));
+                        //Amount = TotalAmount.getText().toString();
                     }
                 });
 

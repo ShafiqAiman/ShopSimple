@@ -61,10 +61,10 @@ public class receipt extends AppCompatActivity {
     Date dateObj;
     DateFormat dateFormat;
     int pageWidth = 1200;
-    String CustName, CustPhone;
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
-    FirebaseRecyclerAdapter<com.example.shopsimpleapplication.Model.Receipt, CartViewHolder>adapter;
+    public static String CustName, CustPhone;
+    //RecyclerView recyclerView;
+    //RecyclerView.LayoutManager layoutManager;
+    //FirebaseRecyclerAdapter<com.example.shopsimpleapplication.Model.Receipt, CartViewHolder>adapter;
 
 
     @Override
@@ -72,7 +72,7 @@ public class receipt extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receipt);
 
-        recyclerView = findViewById(R.id.cart_list);
+        //recyclerView = findViewById(R.id.cart_list);
 
         createButton = findViewById(R.id.create_Button);
         fAuth = FirebaseAuth.getInstance();
@@ -81,8 +81,9 @@ public class receipt extends AppCompatActivity {
 
         userId = fAuth.getCurrentUser().getUid();
 
+        //to get total price from cart
         Intent intent = getIntent();
-        String totalPrice = intent.getStringExtra(CartActivity.EXTRA_TEXT);
+        String totalPrice = intent.getStringExtra(CartActivity.EXTRA_NUMBER);
 
 
 
@@ -106,8 +107,8 @@ public class receipt extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
 
-       //loadCartDetails();
-        createPDF();
+        //loadCartDetails();
+        createPDF(totalPrice);
 
 
     }
@@ -116,13 +117,13 @@ public class receipt extends AppCompatActivity {
 
 
 
-    private void createPDF() {
+    private void createPDF(final String totalPrice) {
         createButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View vi) {
 
-                Toast.makeText(receipt.this, "Receipt Downloaded", Toast.LENGTH_SHORT).show();
+
 
                 dateObj = new Date();
 
@@ -176,16 +177,17 @@ public class receipt extends AppCompatActivity {
                 canvas.drawLine(880, 820, 880, 850, myPaint);
                 canvas.drawLine(1030, 820, 1030, 850, myPaint);
 
-                //canvas.drawText("" + productNAME, 20, 590, myPaint);
+                canvas.drawText("" + totalPrice, 20, 890, myPaint);
                 //canvas.drawText("" + productPRICE, 20, 640, myPaint);
                 //canvas.drawText("" + productQUANTITY, 20, 640, myPaint);
 
 
 
 
+
                 myPdfDocument.finishPage(myPage1);
 
-                File file = new File(Environment.getExternalStorageDirectory(), "ShopSimple Receipt.pdf");
+                File file = new File(Environment.getExternalStorageDirectory(), "Receipt.pdf");
 
                 try {
                     myPdfDocument.writeTo(new FileOutputStream(file));
@@ -194,6 +196,8 @@ public class receipt extends AppCompatActivity {
                 }
 
                 myPdfDocument.close();
+
+                Toast.makeText(receipt.this, "Receipt Downloaded", Toast.LENGTH_SHORT).show();
 
 
             }
