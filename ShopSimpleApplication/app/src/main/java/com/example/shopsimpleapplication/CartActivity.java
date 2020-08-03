@@ -18,9 +18,15 @@ package com.example.shopsimpleapplication;
 
 
         import com.example.shopsimpleapplication.ViewHolder.CartViewHolder;
+        import com.google.firebase.auth.FirebaseAuth;
         import com.google.firebase.database.DatabaseReference;
         import com.google.firebase.database.FirebaseDatabase;
         import com.firebase.ui.database.FirebaseRecyclerAdapter;
+        import com.google.firebase.firestore.DocumentReference;
+        import com.google.firebase.firestore.DocumentSnapshot;
+        import com.google.firebase.firestore.EventListener;
+        import com.google.firebase.firestore.FirebaseFirestore;
+        import com.google.firebase.firestore.FirebaseFirestoreException;
         import com.paypal.android.sdk.payments.PayPalAuthorization;
         import com.paypal.android.sdk.payments.PayPalConfiguration;
         import com.paypal.android.sdk.payments.PayPalFuturePaymentActivity;
@@ -56,8 +62,12 @@ public class CartActivity extends AppCompatActivity {
 
     FirebaseRecyclerAdapter<com.example.shopsimpleapplication.Model.Cart, CartViewHolder>adapter;
 
+    FirebaseAuth fAuth;
+    FirebaseFirestore fStore;
+    String userId;
     FirebaseDatabase database;
     DatabaseReference Cart, delete;
+    String a = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +82,26 @@ public class CartActivity extends AppCompatActivity {
         //pay = (Button) findViewById(R.id.payBtn);
         TotalAmount = (TextView) findViewById(R.id.total_price);
 
-        database = FirebaseDatabase.getInstance();
-        Cart = database.getReference("Cart");
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
 
-        loadCart();
+        userId = fAuth.getCurrentUser().getUid();
+
+        DocumentReference documentReference = fStore.collection("users").document(userId);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+
+                a = documentSnapshot.getString("PhoneNo");
+                database = FirebaseDatabase.getInstance();
+                Cart = database.getReference("Cart").child(a);
+
+
+                loadCart();
+
+            }
+        });
+        
 
         pay =(Button)findViewById(R.id.payBtn);
         pay.setOnClickListener(new View.OnClickListener()

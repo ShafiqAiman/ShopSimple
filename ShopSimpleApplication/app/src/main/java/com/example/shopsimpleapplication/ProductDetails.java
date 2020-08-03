@@ -1,6 +1,7 @@
 package com.example.shopsimpleapplication;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,20 +17,29 @@ import android.widget.Toast;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.shopsimpleapplication.Model.Cart;
 import com.example.shopsimpleapplication.Model.Product;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.squareup.picasso.Picasso;
 
 public class ProductDetails extends AppCompatActivity {
-
+    FirebaseAuth fAuth;
+    FirebaseFirestore fStore;
+    String userId;
     FirebaseDatabase database;
     DatabaseReference id, order;
     String y = "";
+    String a = "";
 
     private Button addToCartButton;
     private ImageView productImage;
@@ -46,6 +56,11 @@ public class ProductDetails extends AppCompatActivity {
         id = database.getReference("Product");
         order = database.getReference("Cart");
 
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+
+        userId = fAuth.getCurrentUser().getUid();
+
         numberButton = (ElegantNumberButton)findViewById(R.id.number_btn);
         productImage = (ImageView)findViewById(R.id.product_image_details);
         productName = (TextView)findViewById(R.id.product_name_details);
@@ -53,6 +68,16 @@ public class ProductDetails extends AppCompatActivity {
         productId = (TextView)findViewById(R.id.product_ID);
         addToCartButton = (Button)findViewById(R.id.add_to_cart_button);
         scanCode();
+
+        DocumentReference documentReference = fStore.collection("users").document(userId);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+
+                a = documentSnapshot.getString("PhoneNo");
+
+            }
+        });
 
     }
 
@@ -93,8 +118,9 @@ public class ProductDetails extends AppCompatActivity {
                                             @Override
                                             public void onClick(View v) {
                                                 Cart cart = new Cart(product.getName(),product.getPrice(), numberButton.getNumber(),product.getId());
-                                                order.child(y).setValue(cart);
-                                                Toast.makeText(ProductDetails.this,"Item is added",Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(ProductDetails.this,a,Toast.LENGTH_SHORT).show();
+                                                order.child(a).child(y).setValue(cart);
+                                                //Toast.makeText(ProductDetails.this,"Item is added",Toast.LENGTH_SHORT).show();
                                                 scanCode();
 
                                             }
