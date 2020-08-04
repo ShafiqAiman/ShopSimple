@@ -118,9 +118,9 @@ public class ProductDetails extends AppCompatActivity {
                                             @Override
                                             public void onClick(View v) {
                                                 Cart cart = new Cart(product.getName(),product.getPrice(), numberButton.getNumber(),product.getId());
-                                                Toast.makeText(ProductDetails.this,a,Toast.LENGTH_SHORT).show();
+                                                //Toast.makeText(ProductDetails.this,a,Toast.LENGTH_SHORT).show();
                                                 order.child(a).child(y).setValue(cart);
-                                                //Toast.makeText(ProductDetails.this,"Item is added",Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(ProductDetails.this,"Item is added",Toast.LENGTH_SHORT).show();
                                                 scanCode();
 
                                             }

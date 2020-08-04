@@ -101,7 +101,7 @@ public class CartActivity extends AppCompatActivity {
 
             }
         });
-        
+
 
         pay =(Button)findViewById(R.id.payBtn);
         pay.setOnClickListener(new View.OnClickListener()
@@ -162,6 +162,8 @@ public class CartActivity extends AppCompatActivity {
                         System.out.println(confirm.getPayment().toJSONObject().toString(4));
                         Toast.makeText(this, "Payment Successful", Toast.LENGTH_LONG).show();
 
+
+                        //send total price to receipt
                         DecimalFormat df = new DecimalFormat("#,###,##0.00");
                         //priceTotal = df.format(TotalPrice);
                         //Double priceTotal = Double.parseDouble(String.valueOf(TotalPrice));
@@ -219,19 +221,18 @@ public class CartActivity extends AppCompatActivity {
                 cartViewHolder.productPRICE.setText("RM "+cart.getPrice());
                 cartViewHolder.productQUANTITY.setText(cart.getQuantity());
 
+                String myList[] = {cart.getId(),cart.getName(),cart.getPrice(),cart.getQuantity()};
                 Double DProductPrice = ((Double.valueOf(cart.getPrice()))) * (Double.valueOf(cart.getQuantity()));
                 TotalPrice = TotalPrice + DProductPrice;
                 DecimalFormat df2 = new DecimalFormat("#,###,##0.00");
 
                 TotalAmount.setText("Total Price = RM"+String.valueOf(df2.format(TotalPrice)));
-                //final Cart local = cart;
 
                 cartViewHolder.deleteBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Cart.child(cart.getId()).removeValue();
                         Toast.makeText(CartActivity.this,"This item is removed.",Toast.LENGTH_SHORT).show();
-
                         Double DProductPrice = ((Double.valueOf(cart.getPrice()))) * (Double.valueOf(cart.getQuantity()));
                         TotalPrice = TotalPrice - DProductPrice;
                         DecimalFormat df2 = new DecimalFormat("#,###,##0.00");

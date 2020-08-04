@@ -90,7 +90,6 @@ public class receipt extends AppCompatActivity {
 
 
 
-
         //Cart = database.getReference("Cart");
 
         DocumentReference documentReference = fStore.collection("users").document(userId);
@@ -177,7 +176,7 @@ public class receipt extends AppCompatActivity {
                 canvas.drawLine(880, 820, 880, 850, myPaint);
                 canvas.drawLine(1030, 820, 1030, 850, myPaint);
 
-                canvas.drawText("" + totalPrice, 20, 890, myPaint);
+                canvas.drawText("" + totalPrice, 1050, 900, myPaint);
                 //canvas.drawText("" + productPRICE, 20, 640, myPaint);
                 //canvas.drawText("" + productQUANTITY, 20, 640, myPaint);
 
