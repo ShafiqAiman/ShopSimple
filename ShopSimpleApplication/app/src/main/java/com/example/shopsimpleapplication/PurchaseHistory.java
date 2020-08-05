@@ -86,10 +86,6 @@ public class PurchaseHistory extends AppCompatActivity {
         });
 
 
-
-
-
-
     pay =(Button)findViewById(R.id.payBtn);
     pay.setOnClickListener(new View.OnClickListener()
 

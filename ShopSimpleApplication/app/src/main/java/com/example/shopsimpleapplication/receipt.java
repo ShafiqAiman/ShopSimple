@@ -22,12 +22,14 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONException;
 
 
 import com.example.shopsimpleapplication.Model.Cart;
+import com.example.shopsimpleapplication.Model.Product;
 import com.example.shopsimpleapplication.Model.Receipt;
 import com.example.shopsimpleapplication.ViewHolder.CartViewHolder;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,9 +47,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 public class receipt extends AppCompatActivity {
 
@@ -60,6 +65,8 @@ public class receipt extends AppCompatActivity {
     Button createButton;
     Date dateObj;
     DateFormat dateFormat;
+    private ResourceBundle productQUANTITY;
+    Array productPRICE;
     int pageWidth = 1200;
     public static String CustName, CustPhone;
     //RecyclerView recyclerView;
@@ -87,9 +94,6 @@ public class receipt extends AppCompatActivity {
 
 
 
-
-
-
         //Cart = database.getReference("Cart");
 
         DocumentReference documentReference = fStore.collection("users").document(userId);
@@ -109,11 +113,7 @@ public class receipt extends AppCompatActivity {
         //loadCartDetails();
         createPDF(totalPrice);
 
-
     }
-
-
-
 
 
     private void createPDF(final String totalPrice) {
@@ -122,10 +122,7 @@ public class receipt extends AppCompatActivity {
             @Override
             public void onClick(View vi) {
 
-
-
                 dateObj = new Date();
-
 
                 PdfDocument myPdfDocument = new PdfDocument();
                 Paint myPaint = new Paint();
@@ -176,10 +173,24 @@ public class receipt extends AppCompatActivity {
                 canvas.drawLine(880, 820, 880, 850, myPaint);
                 canvas.drawLine(1030, 820, 1030, 850, myPaint);
 
-                canvas.drawText("" + totalPrice, 1050, 900, myPaint);
-                //canvas.drawText("" + productPRICE, 20, 640, myPaint);
-                //canvas.drawText("" + productQUANTITY, 20, 640, myPaint);
+                if(Product.getSelectedItemPosition() == null){
+                    canvas.drawText("1.", 40, 950, myPaint);
+                    assert Product.getSelectedItem() != null;
+                    canvas.drawText(Product.getSelectedItem(),200,950,myPaint);
+                    canvas.drawText(Array(productPRICE[Product.getSelectedItem()]), 700, 950,myPaint);
+                    canvas.drawText(productQUANTITY.getClass().toString(),900,950,myPaint);
+                    totalPrice = Float.parseFloat(productQUANTITY.getClass().toString()*productPRICE[Product.getSelectedItem()]);
+                    myPaint.setTextAlign(Paint.Align.RIGHT);
+                    canvas.drawText(String.valueOf(totalPrice),pageWidth-40,950,myPaint);
+                    myPaint.setTextAlign(Paint.Align.LEFT);
+                }
 
+
+                canvas.drawLine(600,1200, pageWidth-20,1200,myPaint);
+                canvas.drawText("" + totalPrice, 20, 890, myPaint);
+                canvas.drawText("" + productPRICE, 20, 640, myPaint);
+                canvas.drawText("" + productQUANTITY, 20, 640, myPaint);
+                myPaint.setColor(Color.BLACK);
 
 
 
@@ -202,8 +213,5 @@ public class receipt extends AppCompatActivity {
             }
         });
     }
-
-
-
 
 }

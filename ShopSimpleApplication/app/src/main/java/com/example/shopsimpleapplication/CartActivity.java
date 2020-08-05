@@ -18,15 +18,9 @@ package com.example.shopsimpleapplication;
 
 
         import com.example.shopsimpleapplication.ViewHolder.CartViewHolder;
-        import com.google.firebase.auth.FirebaseAuth;
         import com.google.firebase.database.DatabaseReference;
         import com.google.firebase.database.FirebaseDatabase;
         import com.firebase.ui.database.FirebaseRecyclerAdapter;
-        import com.google.firebase.firestore.DocumentReference;
-        import com.google.firebase.firestore.DocumentSnapshot;
-        import com.google.firebase.firestore.EventListener;
-        import com.google.firebase.firestore.FirebaseFirestore;
-        import com.google.firebase.firestore.FirebaseFirestoreException;
         import com.paypal.android.sdk.payments.PayPalAuthorization;
         import com.paypal.android.sdk.payments.PayPalConfiguration;
         import com.paypal.android.sdk.payments.PayPalFuturePaymentActivity;
@@ -62,12 +56,8 @@ public class CartActivity extends AppCompatActivity {
 
     FirebaseRecyclerAdapter<com.example.shopsimpleapplication.Model.Cart, CartViewHolder>adapter;
 
-    FirebaseAuth fAuth;
-    FirebaseFirestore fStore;
-    String userId;
     FirebaseDatabase database;
     DatabaseReference Cart, delete;
-    String a = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,26 +72,10 @@ public class CartActivity extends AppCompatActivity {
         //pay = (Button) findViewById(R.id.payBtn);
         TotalAmount = (TextView) findViewById(R.id.total_price);
 
-        fAuth = FirebaseAuth.getInstance();
-        fStore = FirebaseFirestore.getInstance();
+        database = FirebaseDatabase.getInstance();
+        Cart = database.getReference("Cart");
 
-        userId = fAuth.getCurrentUser().getUid();
-
-        DocumentReference documentReference = fStore.collection("users").document(userId);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-
-                a = documentSnapshot.getString("PhoneNo");
-                database = FirebaseDatabase.getInstance();
-                Cart = database.getReference("Cart").child(a);
-
-
-                loadCart();
-
-            }
-        });
-
+        loadCart();
 
         pay =(Button)findViewById(R.id.payBtn);
         pay.setOnClickListener(new View.OnClickListener()
@@ -162,8 +136,6 @@ public class CartActivity extends AppCompatActivity {
                         System.out.println(confirm.getPayment().toJSONObject().toString(4));
                         Toast.makeText(this, "Payment Successful", Toast.LENGTH_LONG).show();
 
-
-                        //send total price to receipt
                         DecimalFormat df = new DecimalFormat("#,###,##0.00");
                         //priceTotal = df.format(TotalPrice);
                         //Double priceTotal = Double.parseDouble(String.valueOf(TotalPrice));
@@ -221,18 +193,19 @@ public class CartActivity extends AppCompatActivity {
                 cartViewHolder.productPRICE.setText("RM "+cart.getPrice());
                 cartViewHolder.productQUANTITY.setText(cart.getQuantity());
 
-                String myList[] = {cart.getId(),cart.getName(),cart.getPrice(),cart.getQuantity()};
                 Double DProductPrice = ((Double.valueOf(cart.getPrice()))) * (Double.valueOf(cart.getQuantity()));
                 TotalPrice = TotalPrice + DProductPrice;
                 DecimalFormat df2 = new DecimalFormat("#,###,##0.00");
 
                 TotalAmount.setText("Total Price = RM"+String.valueOf(df2.format(TotalPrice)));
+                //final Cart local = cart;
 
                 cartViewHolder.deleteBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Cart.child(cart.getId()).removeValue();
                         Toast.makeText(CartActivity.this,"This item is removed.",Toast.LENGTH_SHORT).show();
+
                         Double DProductPrice = ((Double.valueOf(cart.getPrice()))) * (Double.valueOf(cart.getQuantity()));
                         TotalPrice = TotalPrice - DProductPrice;
                         DecimalFormat df2 = new DecimalFormat("#,###,##0.00");

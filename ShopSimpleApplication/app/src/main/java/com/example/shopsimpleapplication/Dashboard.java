@@ -1,7 +1,6 @@
 package com.example.shopsimpleapplication;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -17,11 +16,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.zxing.client.android.Intents;
 
 public class Dashboard extends AppCompatActivity {
@@ -29,8 +23,6 @@ public class Dashboard extends AppCompatActivity {
     Button callLogOut, verifyBtn, callScan, callToast, callReceipt;
     TextView verifyText;
     FirebaseAuth fAuth;
-
-    FirebaseFirestore fStore;
     String userId;
 
     @Override
@@ -38,7 +30,6 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_dashboard);
-
 
 
         callScan = findViewById(R.id.toScan);
@@ -63,32 +54,16 @@ public class Dashboard extends AppCompatActivity {
             }
         });
 
-        //callReceipt = findViewById(R.id.receiptgen);
+        callReceipt = findViewById(R.id.receiptgen);
 
-        fAuth = FirebaseAuth.getInstance();
-        fStore = FirebaseFirestore.getInstance();
-        userId = fAuth.getCurrentUser().getUid();
+        callReceipt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View vi) {
+                Intent intent = new Intent(Dashboard.this, receipt.class);
+                startActivity(intent);
 
-        DocumentReference documentReference = fStore.collection("users").document(userId);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-
-                        //uphone.setText(documentSnapshot.getString("PhoneNo"));
-
-                        final String a = documentSnapshot.getString("PhoneNo");
-                        callReceipt = findViewById(R.id.receiptgen);
-
-                        callReceipt.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Toast.makeText(Dashboard.this, "User Phone Number : " + a, Toast.LENGTH_SHORT).show();
-                            }
-
-                        });
-
-                    }
-                });
+            }
+        });
 
         callLogOut = findViewById(R.id.logoutBtn);
 
