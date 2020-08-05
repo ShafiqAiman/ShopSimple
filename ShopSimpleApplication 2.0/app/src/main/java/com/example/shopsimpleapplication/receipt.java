@@ -93,6 +93,8 @@ public class receipt extends AppCompatActivity {
         String count = intent.getStringExtra("count");
         int Count = Integer.parseInt(count);
 
+        String str = pID+System.getProperty("line.separator")+pName+System.getProperty("line.separator");
+
 
 
         //Cart = database.getReference("Cart");
@@ -169,31 +171,30 @@ public class receipt extends AppCompatActivity {
 
                 myPaint.setTextAlign(Paint.Align.LEFT);
                 myPaint.setStyle(Paint.Style.FILL);
-                canvas.drawText("Product Id", 70, 850, myPaint);
-                canvas.drawText("Item Name", 300, 850, myPaint);
-                canvas.drawText("Price", 800, 850, myPaint);
-                canvas.drawText("Qty", 1000, 850, myPaint);
-                canvas.drawText("Total", 1200, 850, myPaint);
+                canvas.drawText("Product Id", 65, 850, myPaint);
+                canvas.drawText("Item Name", 380, 850, myPaint);
+                canvas.drawText("Price", 1230, 850, myPaint);
+                canvas.drawText("Qty", 1410, 850, myPaint);
+                canvas.drawText("Total", 1580, 850, myPaint);
 
-                canvas.drawLine(280, 820, 280, 850, myPaint);
-                canvas.drawLine(780, 820, 780, 850, myPaint);
-                canvas.drawLine(980, 820, 980, 850, myPaint);
-                canvas.drawLine(1130, 820, 1130, 850, myPaint);
-
+                canvas.drawLine(360, 820, 360, 850, myPaint);
+                canvas.drawLine(1170, 820, 1170, 850, myPaint);
+                canvas.drawLine(1380, 820, 1380, 850, myPaint);
+                canvas.drawLine(1500, 820, 1500, 850, myPaint);
 
 
                 int b = 900;
 
                 for (int i=0;i<count;i++){
 
-                    canvas.drawText(pID[i], 70, b, myPaint);
-                    canvas.drawText(pName[i], 300, b, myPaint);
-                    canvas.drawText(pPrice[i], 800, b, myPaint);
-                    canvas.drawText(pQuantity[i], 1000, b, myPaint);
+                    canvas.drawText(pID[i], 65, b, myPaint);
+                    canvas.drawText(pName[i], 380, b, myPaint);
+                    canvas.drawText(pPrice[i], 1230, b, myPaint);
+                    canvas.drawText(pQuantity[i], 1410, b, myPaint);
                     b = b+50;
                 }
 
-                canvas.drawText("" + totalPrice, 1050, 900, myPaint);
+                canvas.drawText("" + totalPrice, 1580, 900, myPaint);
                 //canvas.drawText("" + productPRICE, 20, 640, myPaint);
                 //canvas.drawText("" + productQUANTITY, 20, 640, myPaint);
 
