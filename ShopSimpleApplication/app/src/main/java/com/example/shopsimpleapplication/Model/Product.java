@@ -16,14 +16,6 @@ public class Product {
         Id = id;
     }
 
-    public static String getSelectedItemPosition() {
-        return null;
-    }
-
-    public static String getSelectedItem() {
-        return null;
-    }
-
     public String getName() {
         return Name;
     }
