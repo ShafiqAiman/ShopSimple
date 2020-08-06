@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -22,39 +21,72 @@
         android:id="@+id/r111"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="#55b599"
         android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/space"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Total Price = "
+            android:textSize="20dp"
+            android:textColor="@android:color/white"
+            android:textAlignment="center"/>
         <TextView
             android:id="@+id/total_price"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/space"
             android:text="Total Price = "
             android:textSize="20dp"
             android:textColor="@android:color/white"
             android:textAlignment="center"/>
 
+
+
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/cart_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/cart_list"
+        android:layout_above="@+id/buttons"
         android:layout_below="@+id/r111"
-        android:layout_above="@+id/payBtn"
-        android:scrollbars="vertical"
-        />
+        android:scrollbars="vertical" />
 
-    <Button
-        android:id="@+id/payBtn"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:weightSum="2"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimaryDark"
-        android:text="Next"
-        android:textColor="@android:color/white"
-        android:textSize="20dp"
-        />
+        android:orientation="horizontal"
+        android:id="@+id/buttons">
 
+
+        <Button
+            android:id="@+id/clearCart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:layout_alignParentBottom="true"
+            android:text="Clear Cart"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:background="@drawable/round_btn_bg"/>
+
+        <Button
+            android:id="@+id/payBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:layout_alignParentBottom="true"
+            android:text="Proceed"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:background="@drawable/round_btn_bg"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

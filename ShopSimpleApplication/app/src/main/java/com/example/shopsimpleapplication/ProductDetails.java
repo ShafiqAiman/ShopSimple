@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,7 +42,7 @@ public class ProductDetails extends AppCompatActivity {
     String y = "";
     String a = "";
 
-    private Button addToCartButton;
+    private Button addToCartButton,goCart,goScan;
     private ImageView productImage;
     private ElegantNumberButton numberButton;
     private TextView productPrice, productName, productId;
@@ -51,6 +52,7 @@ public class ProductDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         database = FirebaseDatabase.getInstance();
         id = database.getReference("Product");
@@ -67,6 +69,8 @@ public class ProductDetails extends AppCompatActivity {
         productPrice = (TextView)findViewById(R.id.product_price_details);
         productId = (TextView)findViewById(R.id.product_ID);
         addToCartButton = (Button)findViewById(R.id.add_to_cart_button);
+        goCart = (Button)findViewById(R.id.toCart);
+        goScan = (Button)findViewById(R.id.backScan);
         scanCode();
 
         DocumentReference documentReference = fStore.collection("users").document(userId);
@@ -79,6 +83,26 @@ public class ProductDetails extends AppCompatActivity {
             }
         });
 
+        goCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProductDetails.this, CartActivity.class);
+                startActivity(intent);
+
+            }
+
+
+        });
+
+        goScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scanCode();
+
+            }
+
+
+        });
     }
 
     private void scanCode(){
@@ -121,7 +145,7 @@ public class ProductDetails extends AppCompatActivity {
                                                 //Toast.makeText(ProductDetails.this,a,Toast.LENGTH_SHORT).show();
                                                 order.child(a).child(y).setValue(cart);
                                                 Toast.makeText(ProductDetails.this,"Item is added",Toast.LENGTH_SHORT).show();
-                                                scanCode();
+                                                //scanCode();
 
                                             }
                                         });

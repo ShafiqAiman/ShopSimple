@@ -40,7 +40,7 @@
         android:layout_alignParentTop="false"
         android:layout_marginLeft="70dp"
         android:layout_marginTop="40dp"
-        android:background="#55b599"
+        android:background="@drawable/round_btn_bg"
         android:elevation="4dp"
         android:text="Scan Barcode"
         android:textColor="#fff"
@@ -50,14 +50,14 @@
 
     <Button
 
-        android:id="@+id/purchase_history"
+        android:id="@+id/toCart"
         android:layout_width="238dp"
         android:layout_height="55dp"
         android:layout_alignParentLeft="false"
         android:layout_alignParentTop="false"
         android:layout_marginLeft="70dp"
         android:layout_marginTop="20dp"
-        android:background="#55b599"
+        android:background="@drawable/round_btn_bg"
         android:text="CART"
         android:textColor="#060606"
         tools:ignore="MissingConstraints"
@@ -72,7 +72,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="70dp"
         android:layout_marginTop="20dp"
-        android:background="#55b599"
+        android:background="@drawable/round_btn_bg"
         android:text="dont press here"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="77dp"
@@ -86,11 +86,11 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="70dp"
         android:layout_marginTop="20dp"
-        android:background="#55b599"
         android:text="LOG OUT"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="77dp"
-        tools:layout_editor_absoluteY="600dp" />
+        tools:layout_editor_absoluteY="600dp"
+        android:background="@drawable/round_btn_bg"/>
 
     <TextView
         android:id="@+id/verifyText"

@@ -22,11 +22,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.zxing.client.android.Intents;
 
 public class Dashboard extends AppCompatActivity {
 
-    Button callLogOut, verifyBtn, callScan, callToast, callReceipt;
+    Button callLogOut, verifyBtn, callScan, callCart, callHistory;
     TextView verifyText;
     FirebaseAuth fAuth;
 
@@ -40,7 +39,6 @@ public class Dashboard extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
 
-
         callScan = findViewById(R.id.toScan);
 
         callScan.setOnClickListener(new View.OnClickListener() {
@@ -52,43 +50,32 @@ public class Dashboard extends AppCompatActivity {
             }
         });
 
-        callToast = findViewById(R.id.purchase_history);
+        callCart = findViewById(R.id.toCart);
 
-        callToast.setOnClickListener(new View.OnClickListener() {
+        callCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View vi) {
-                Intent cartDetails = new Intent(Dashboard.this, CartActivity.class);
-                startActivity(cartDetails);
+                Intent intent = new Intent(Dashboard.this, CartActivity.class);
+                startActivity(intent);
 
             }
         });
 
         //callReceipt = findViewById(R.id.receiptgen);
 
-        fAuth = FirebaseAuth.getInstance();
-        fStore = FirebaseFirestore.getInstance();
-        userId = fAuth.getCurrentUser().getUid();
+        callHistory = findViewById(R.id.receiptgen);
 
-        DocumentReference documentReference = fStore.collection("users").document(userId);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+        callHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Dashboard.this, PurchaseHistory.class);
+                startActivity(intent);
 
-                        //uphone.setText(documentSnapshot.getString("PhoneNo"));
+            }
 
-                        final String a = documentSnapshot.getString("PhoneNo");
-                        callReceipt = findViewById(R.id.receiptgen);
 
-                        callReceipt.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Toast.makeText(Dashboard.this, "User Phone Number : " + a, Toast.LENGTH_SHORT).show();
-                            }
+        });
 
-                        });
-
-                    }
-                });
 
         callLogOut = findViewById(R.id.logoutBtn);
 
@@ -105,8 +92,7 @@ public class Dashboard extends AppCompatActivity {
         });
 
 
-
-        fAuth =FirebaseAuth.getInstance();
+        fAuth = FirebaseAuth.getInstance();
 
         verifyBtn = findViewById(R.id.verifyBtn);
         verifyText = findViewById(R.id.verifyText);
@@ -138,8 +124,13 @@ public class Dashboard extends AppCompatActivity {
             });
 
         }
-
     }
+
+        /*public void receiptgen(View v){
+            startActivity(new Intent(getApplicationContext(),PurchaseHistory.class));
+        }*/
+
+
 }
 
 

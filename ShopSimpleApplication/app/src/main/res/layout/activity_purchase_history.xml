@@ -21,50 +21,54 @@
 
 
     <TextView
-        android:id="@+id/phone"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/raleway_medium_italic"
-        android:text="set"
+        android:text="Purchase History"
         android:textSize="30sp"
         tools:layout_editor_absoluteX="27dp"
         tools:layout_editor_absoluteY="188dp" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <ListView
+        android:id="@+id/myListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:layout_above="@+id/backDashboard">
+
+    </ListView>
+
 
 
     <Button
-        android:id="@+id/toast"
-        android:layout_width="238dp"
-        android:layout_height="55dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Dashboard"
+        android:textColor="#fff"
+        android:id="@+id/backDashboard"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
         android:layout_alignParentLeft="false"
         android:layout_alignParentTop="false"
         android:layout_marginLeft="70dp"
-        android:layout_marginTop="100dp"
-        android:background="#55b599"
-        android:elevation="4dp"
-        android:text="Tap to See"
-        android:textColor="#fff"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="77dp"
-        tools:layout_editor_absoluteY="303dp" />
+        android:layout_marginBottom="20dp"
+        android:background="#55b599" />
 
-    <Button
-        android:id="@+id/submitBtn"
-        android:layout_width="238dp"
-        android:layout_height="55dp"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentTop="false"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="100dp"
-        android:background="#55b599"
-        android:elevation="4dp"
-        android:text="Proceed to Payment"
-        android:textColor="#fff"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="77dp"
-        tools:layout_editor_absoluteY="303dp" />
+    </RelativeLayout>
+
+
+
+
+
+
 
 
 </LinearLayout>
+

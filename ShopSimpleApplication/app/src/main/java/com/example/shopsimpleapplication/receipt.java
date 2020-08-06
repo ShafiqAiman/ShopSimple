@@ -1,5 +1,6 @@
 package com.example.shopsimpleapplication;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +32,8 @@ import org.json.JSONException;
 import com.example.shopsimpleapplication.Model.Cart;
 import com.example.shopsimpleapplication.Model.Receipt;
 import com.example.shopsimpleapplication.ViewHolder.CartViewHolder;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -40,6 +44,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 
 import java.io.File;
@@ -57,20 +64,28 @@ public class receipt extends AppCompatActivity {
     DatabaseReference Cart;
     FirebaseStorage fStorage;
     String userId;
+    String x ="";
+    String y = "";
+    String z = "";
+    String time = "";
+    String w, a = "";
     Button createButton;
     Date dateObj;
     DateFormat dateFormat;
-    int pageWidth = 1200;
+    int pageWidth = 2000;
     public static String CustName, CustPhone;
     //RecyclerView recyclerView;
     //RecyclerView.LayoutManager layoutManager;
     //FirebaseRecyclerAdapter<com.example.shopsimpleapplication.Model.Receipt, CartViewHolder>adapter;
 
+    StorageReference storageReference;
+    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receipt);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //recyclerView = findViewById(R.id.cart_list);
 
@@ -81,16 +96,25 @@ public class receipt extends AppCompatActivity {
 
         userId = fAuth.getCurrentUser().getUid();
 
+        storageReference = FirebaseStorage.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference("receipts");
+
+
         //to get total price from cart
         Intent intent = getIntent();
         String totalPrice = intent.getStringExtra(CartActivity.EXTRA_NUMBER);
 
+        String[] pID = intent.getStringArrayExtra("pID");
+        String[] pName = intent.getStringArrayExtra("pName");
+        String[] pPrice = intent.getStringArrayExtra("pPrice");
+        String[] pQuantity = intent.getStringArrayExtra("pQuantity");
+
+        String count = intent.getStringExtra("count");
+        int Count = Integer.parseInt(count);
+
+        String str = pID+System.getProperty("line.separator")+pName+System.getProperty("line.separator");
 
 
-
-
-
-        //Cart = database.getReference("Cart");
 
         DocumentReference documentReference = fStore.collection("users").document(userId);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
@@ -107,7 +131,9 @@ public class receipt extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
 
         //loadCartDetails();
-        createPDF(totalPrice);
+        createPDF(totalPrice, pID, pName, pPrice, pQuantity, Count);
+
+
 
 
     }
@@ -116,14 +142,13 @@ public class receipt extends AppCompatActivity {
 
 
 
-    private void createPDF(final String totalPrice) {
+    private void createPDF(final String totalPrice, final String[] pID, final String[] pName, final String[] pPrice, final String[] pQuantity,final int count) {
         createButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View vi) {
 
-
-
+                Toast.makeText(receipt.this, pName[0], Toast.LENGTH_LONG).show();
                 dateObj = new Date();
 
 
@@ -131,7 +156,7 @@ public class receipt extends AppCompatActivity {
                 Paint myPaint = new Paint();
                 Paint titlePaint = new Paint();
 
-                PdfDocument.PageInfo myPageInfo1 = new PdfDocument.PageInfo.Builder(1200, 2010, 1).create();
+                PdfDocument.PageInfo myPageInfo1 = new PdfDocument.PageInfo.Builder(2000, 2010, 1).create();
                 PdfDocument.Page myPage1 = myPdfDocument.startPage(myPageInfo1);
                 Canvas canvas = myPage1.getCanvas();
 
@@ -150,8 +175,7 @@ public class receipt extends AppCompatActivity {
                 myPaint.setTextAlign(Paint.Align.LEFT);
                 myPaint.setTextSize(35f);
                 myPaint.setColor(Color.BLACK);
-                int a = 0;
-                canvas.drawText("Invoice No: 01", 20, 690, myPaint);
+                canvas.drawText("Invoice No: "+ System.currentTimeMillis(), 20, 690, myPaint);
 
                 dateFormat = new SimpleDateFormat("dd/MM/yy");
                 canvas.drawText("Date: " + dateFormat.format(dateObj), 20, 740, myPaint);
@@ -165,28 +189,39 @@ public class receipt extends AppCompatActivity {
 
                 myPaint.setTextAlign(Paint.Align.LEFT);
                 myPaint.setStyle(Paint.Style.FILL);
-                canvas.drawText("Product Id", 40, 850, myPaint);
-                canvas.drawText("Item Name", 250, 850, myPaint);
-                canvas.drawText("Price", 700, 850, myPaint);
-                canvas.drawText("Qty", 900, 850, myPaint);
-                canvas.drawText("Total", 1050, 850, myPaint);
+                canvas.drawText("Product Id", 65, 850, myPaint);
+                canvas.drawText("Item Name", 380, 850, myPaint);
+                canvas.drawText("Price", 1230, 850, myPaint);
+                canvas.drawText("Qty", 1410, 850, myPaint);
+                canvas.drawText("Total", 1580, 850, myPaint);
 
-                canvas.drawLine(230, 820, 230, 850, myPaint);
-                canvas.drawLine(680, 820, 680, 850, myPaint);
-                canvas.drawLine(880, 820, 880, 850, myPaint);
-                canvas.drawLine(1030, 820, 1030, 850, myPaint);
+                canvas.drawLine(360, 820, 360, 850, myPaint);
+                canvas.drawLine(1170, 820, 1170, 850, myPaint);
+                canvas.drawLine(1380, 820, 1380, 850, myPaint);
+                canvas.drawLine(1500, 820, 1500, 850, myPaint);
 
-                canvas.drawText("" + totalPrice, 1050, 900, myPaint);
-                //canvas.drawText("" + productPRICE, 20, 640, myPaint);
-                //canvas.drawText("" + productQUANTITY, 20, 640, myPaint);
+                int b = 900;
 
+                for (int i=0;i<count;i++){
 
+                    canvas.drawText(pID[i], 65, b, myPaint);
+                    canvas.drawText(pName[i], 380, b, myPaint);
+                    canvas.drawText(pPrice[i], 1230, b, myPaint);
+                    canvas.drawText(pQuantity[i], 1410, b, myPaint);
+                    b = b+50;
+                }
+
+                canvas.drawText("" + totalPrice, 1580, 900, myPaint);
 
 
 
                 myPdfDocument.finishPage(myPage1);
 
-                File file = new File(Environment.getExternalStorageDirectory(), "Receipt.pdf");
+                dateFormat = new SimpleDateFormat("HHmmss");
+                time = dateFormat.format(dateObj);
+                dateFormat = new SimpleDateFormat("ddMMyy");
+                y = dateFormat.format(dateObj);
+                File file = new File(Environment.getExternalStorageDirectory(),  time + "_" + y + ".pdf");
 
                 try {
                     myPdfDocument.writeTo(new FileOutputStream(file));
@@ -196,14 +231,56 @@ public class receipt extends AppCompatActivity {
 
                 myPdfDocument.close();
 
+                //selectPDFFile();
+
+                uploadPDFFile(file);
+
+                Intent intent = new Intent(receipt.this, PurchaseHistory.class);
+                startActivity(intent);
+
                 Toast.makeText(receipt.this, "Receipt Downloaded", Toast.LENGTH_SHORT).show();
+
+
 
 
             }
         });
     }
 
+    private void uploadPDFFile(File data) {
 
+        dateObj = new Date();
+
+        dateFormat = new SimpleDateFormat("ddMMyy");
+        z = CustPhone + "_" + dateFormat.format(dateObj);
+        a = dateFormat.format(dateObj);
+        dateFormat = new SimpleDateFormat("HHmmss");
+        time = dateFormat.format(dateObj);
+        w = z +"_"+ time;
+
+        StorageReference reference = storageReference.child(CustPhone+ "/"+ w +".pdf");
+        reference.putFile(Uri.fromFile(data))
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        Task<Uri> uri = taskSnapshot.getStorage().getDownloadUrl();
+                        while(!uri.isComplete());
+                        Uri url = uri.getResult();
+
+                        dateFormat = new SimpleDateFormat("ddMMyy");
+                        x = CustPhone + "_" + dateFormat.format(dateObj);
+                        uploadPDF uploadPDF = new uploadPDF( a + "_" + time + ".pdf",url.toString());
+                        databaseReference.child(CustPhone).child(databaseReference.push().getKey()).setValue(uploadPDF);
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+
+
+            }
+        });
+    }
 
 
 }
