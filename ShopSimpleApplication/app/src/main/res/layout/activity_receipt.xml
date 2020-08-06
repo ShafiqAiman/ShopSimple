@@ -16,7 +16,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:paddingTop="-20dp"
-        android:src="@drawable/logo"
+        android:src="@drawable/logo_final"
         />
 
 
@@ -29,6 +29,7 @@
         android:fontFamily="@font/raleway_medium_italic"
         android:text="Purchase History"
         android:textSize="30sp"
+        android:textColor="@color/colorPrimary"
         tools:layout_editor_absoluteX="27dp"
         tools:layout_editor_absoluteY="188dp" />
 
@@ -40,7 +41,7 @@
         android:layout_alignParentTop="false"
         android:layout_marginLeft="70dp"
         android:layout_marginTop="100dp"
-        android:background="#55b599"
+        android:background="@drawable/round_btn_bg"
         android:elevation="4dp"
         android:text="Download Receipt"
         android:textColor="#fff"

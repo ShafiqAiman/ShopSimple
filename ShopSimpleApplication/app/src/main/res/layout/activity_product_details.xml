@@ -63,7 +63,7 @@
         android:elevation="6dp"
         app:initialNumber="1"
         app:finalNumber="10"
-        app:backGroundColor="#55b599"
+        app:backGroundColor="@color/colorPrimary"
         android:layout_centerHorizontal="true"
         app:textSize="16dp"
         >
