@@ -8,16 +8,7 @@
     android:orientation="vertical"
     android:paddingTop="20dp"
     tools:context=".PurchaseHistory"
-    android:background="#fff">
-
-
-    <ImageView
-        android:id="@+id/logo_image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:paddingTop="-20dp"
-        android:src="@drawable/logo_final"
-        />
+    android:background="#eaf3e3">
 
 
     <TextView
@@ -26,10 +17,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/raleway_medium_italic"
+        android:fontFamily="@font/raleway_bold_italic"
         android:text="Purchase History"
-        android:textSize="30sp"
         android:textColor="@color/colorPrimary"
+        android:textSize="30sp"
         tools:layout_editor_absoluteX="27dp"
         tools:layout_editor_absoluteY="188dp" />
 
@@ -38,7 +29,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="40dp"
         android:fontFamily="@font/raleway_medium_italic"
         android:text="The receipt format is date and time, click on desired receipt and download."
         android:textSize="15sp"
@@ -59,21 +51,21 @@
     </ListView>
 
 
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Dashboard"
-        android:textColor="#fff"
-        android:id="@+id/backDashboard"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentTop="false"
-        android:layout_marginLeft="70dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/round_btn_bg" />
+        <Button
+            android:id="@+id/backDashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="70dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/round_btn_bg"
+            android:fontFamily="@font/raleway_semibold"
+            android:orientation="horizontal"
+            android:text="Dashboard"
+            android:textColor="#fff" />
 
     </RelativeLayout>
 

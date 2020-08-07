@@ -6,43 +6,78 @@
     android:layout_height="match_parent"
     tools:context=".SignUp"
     android:orientation="vertical"
-    android:background="#fff"
+    android:background="#eaf3e3"
     android:paddingTop="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#fff">
+        android:background="#eaf3e3">
 
-        <ImageView
-            android:id="@+id/logo_image"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/logo_final"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp">
 
-    <TextView
-        android:id="@+id/logo_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome"
-        android:textColor="@color/colorPrimary"
-        android:textSize="30sp"
-        android:fontFamily="@font/raleway_medium_italic"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        />
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                app:cardElevation="6dp"
+                app:cardCornerRadius="12dp"
+                android:layout_margin="12dp"
+                android:layout_marginTop="20dp"
+                android:id="@+id/appLogo"
+                >
 
-    <TextView
-        android:id="@+id/slogan_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign Up to start shopping"
-        android:textSize="18sp"
-        android:textColor="@color/colorPrimary"
-        android:fontFamily="@font/raleway_thin"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"/>
+                <LinearLayout
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/logo_final"
+                        android:layout_alignParentLeft="true"/>
+
+
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/logo_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/raleway_bold_italic"
+            android:text="Welcome"
+            android:textColor="@color/colorPrimary"
+            android:textSize="40sp" />
+
+        <TextView
+            android:id="@+id/slogan_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/raleway_medium_italic"
+            android:text="Sign Up to start shopping"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,15 +86,15 @@
         android:layout_marginBottom="10dp"
         android:orientation="vertical">
 
+
             <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/reg_name"
             android:hint="Full Name"
-                android:outlineAmbientShadowColor="@color/colorPrimaryDark"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -73,7 +108,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/reg_username"
             android:hint="Username"
-            android:outlineAmbientShadowColor="@color/colorPrimaryDark"
             app:counterEnabled="true"
             app:counterMaxLength="15"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -92,7 +126,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/reg_email"
             android:hint="Email"
-            android:outlineAmbientShadowColor="@color/colorPrimaryDark"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp">
@@ -108,7 +141,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/reg_phoneNo"
-            android:outlineAmbientShadowColor="@color/colorPrimaryDark"
             android:hint="Telephone Number"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_marginLeft="20dp"
@@ -126,7 +158,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/reg_password"
             android:hint="Password"
-            android:outlineAmbientShadowColor="@color/colorPrimaryDark"
             app:passwordToggleEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_marginLeft="20dp"
@@ -141,26 +172,27 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/regBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:text="GO"
-        android:textColor="#fff"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
-
-    <Button
+        <Button
+            android:id="@+id/regBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/login_btn"
-            android:background="#00000000"
-            android:fontFamily="@font/raleway_thin"
-            android:text="Already have an account? Log In"
-            android:textColor="@color/colorPrimary"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"/>
+            android:layout_marginRight="20dp"
+            android:background="@color/colorPrimary"
+            android:fontFamily="@font/raleway_semibold"
+            android:text="GO"
+            android:textColor="#fff" />
+
+        <Button
+            android:id="@+id/login_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="#00000000"
+            android:fontFamily="@font/raleway"
+            android:text="Already have an account? Log In"
+            android:textColor="@color/colorPrimary" />
 
 
 

@@ -114,7 +114,6 @@ public class CartActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         childCount = (int) snapshot.getChildrenCount();
-                        //Toast.makeText(CartActivity.this,String.valueOf(childCount),Toast.LENGTH_SHORT).show();
                         PIDArray = new String[childCount];
                         PNameArray = new String[childCount];
                         PPriceArray = new String[childCount];

@@ -5,12 +5,12 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -20,18 +20,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
-import org.json.JSONException;
 
-
-import com.example.shopsimpleapplication.Model.Cart;
-import com.example.shopsimpleapplication.Model.Receipt;
-import com.example.shopsimpleapplication.ViewHolder.CartViewHolder;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,7 +34,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -69,7 +60,7 @@ public class receipt extends AppCompatActivity {
     String z = "";
     String time = "";
     String w, a = "";
-    Button createButton;
+    Bitmap bmp, scaledBitmap;
     Date dateObj;
     DateFormat dateFormat;
     int pageWidth = 2000;
@@ -81,15 +72,14 @@ public class receipt extends AppCompatActivity {
     StorageReference storageReference;
     DatabaseReference databaseReference;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receipt);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        //recyclerView = findViewById(R.id.cart_list);
 
-        createButton = findViewById(R.id.create_Button);
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         fStorage = FirebaseStorage.getInstance();
@@ -98,6 +88,10 @@ public class receipt extends AppCompatActivity {
 
         storageReference = FirebaseStorage.getInstance().getReference();
         databaseReference = FirebaseDatabase.getInstance().getReference("receipts");
+
+        //put image logo on pdf
+        bmp = BitmapFactory.decodeResource(getResources(), R.drawable.logo_final);
+        scaledBitmap = Bitmap.createScaledBitmap(bmp,550, 500,false);
 
 
         //to get total price from cart
@@ -133,6 +127,9 @@ public class receipt extends AppCompatActivity {
         //loadCartDetails();
         createPDF(totalPrice, pID, pName, pPrice, pQuantity, Count);
 
+        Intent i = new Intent(receipt.this, PurchaseHistory.class);
+        startActivity(i);
+
 
 
 
@@ -142,13 +139,11 @@ public class receipt extends AppCompatActivity {
 
 
 
-    private void createPDF(final String totalPrice, final String[] pID, final String[] pName, final String[] pPrice, final String[] pQuantity,final int count) {
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(View vi) {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void createPDF(final String totalPrice, final String[] pID, final String[] pName, final String[] pPrice, final String[] pQuantity, final int count) {
 
-                Toast.makeText(receipt.this, pName[0], Toast.LENGTH_LONG).show();
+
+                //Toast.makeText(receipt.this, pName[0], Toast.LENGTH_LONG).show();
                 dateObj = new Date();
 
 
@@ -169,23 +164,23 @@ public class receipt extends AppCompatActivity {
                 myPaint.setTextAlign(Paint.Align.LEFT);
                 myPaint.setTextSize(35f);
                 myPaint.setColor(Color.BLACK);
-                canvas.drawText("Customer Name: " + CustName, 20, 590, myPaint);
-                canvas.drawText("Contact No.:" + CustPhone, 20, 640, myPaint);
+                canvas.drawText("Customer Name: " + CustName, 40, 590, myPaint);
+                canvas.drawText("Contact No.:" + CustPhone, 40, 640, myPaint);
 
                 myPaint.setTextAlign(Paint.Align.LEFT);
                 myPaint.setTextSize(35f);
                 myPaint.setColor(Color.BLACK);
-                canvas.drawText("Invoice No: "+ System.currentTimeMillis(), 20, 690, myPaint);
+                canvas.drawText("Invoice No: "+ System.currentTimeMillis(), 40, 690, myPaint);
 
                 dateFormat = new SimpleDateFormat("dd/MM/yy");
-                canvas.drawText("Date: " + dateFormat.format(dateObj), 20, 740, myPaint);
+                canvas.drawText("Date: " + dateFormat.format(dateObj), 40, 740, myPaint);
 
                 dateFormat = new SimpleDateFormat("HH:mm:ss");
-                canvas.drawText("Time: " + dateFormat.format(dateObj), 20, 790, myPaint);
+                canvas.drawText("Time: " + dateFormat.format(dateObj), 40, 790, myPaint);
 
                 myPaint.setStyle(Paint.Style.STROKE);
                 myPaint.setStrokeWidth(2);
-                canvas.drawRect(20, 810, pageWidth - 20, 860, myPaint);
+                canvas.drawRect(20, 810, pageWidth - 150, 860, myPaint);
 
                 myPaint.setTextAlign(Paint.Align.LEFT);
                 myPaint.setStyle(Paint.Style.FILL);
@@ -200,6 +195,9 @@ public class receipt extends AppCompatActivity {
                 canvas.drawLine(1380, 820, 1380, 850, myPaint);
                 canvas.drawLine(1500, 820, 1500, 850, myPaint);
 
+                //image in pdf
+                canvas.drawBitmap(scaledBitmap,30,40,myPaint);
+
                 int b = 900;
 
                 for (int i=0;i<count;i++){
@@ -211,11 +209,13 @@ public class receipt extends AppCompatActivity {
                     b = b+50;
                 }
 
-                canvas.drawText("" + totalPrice, 1580, 900, myPaint);
+                myPaint.setTextAlign(Paint.Align.LEFT);
+                canvas.drawLine(65, b-20, pageWidth-150, b-20, myPaint);
+                canvas.drawText("" + totalPrice, 1580, b+15, myPaint);
 
 
 
-                myPdfDocument.finishPage(myPage1);
+        myPdfDocument.finishPage(myPage1);
 
                 dateFormat = new SimpleDateFormat("HHmmss");
                 time = dateFormat.format(dateObj);
@@ -244,8 +244,8 @@ public class receipt extends AppCompatActivity {
 
 
             }
-        });
-    }
+
+
 
     private void uploadPDFFile(File data) {
 

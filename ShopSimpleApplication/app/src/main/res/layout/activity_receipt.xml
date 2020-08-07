@@ -11,42 +11,6 @@
     android:background="#fff">
 
 
-    <ImageView
-        android:id="@+id/logo_image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:paddingTop="-20dp"
-        android:src="@drawable/logo_final"
-        />
 
-
-    <TextView
-        android:id="@+id/logo_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/raleway_medium_italic"
-        android:text="Purchase History"
-        android:textSize="30sp"
-        android:textColor="@color/colorPrimary"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="188dp" />
-
-    <Button
-        android:id="@+id/create_Button"
-        android:layout_width="238dp"
-        android:layout_height="55dp"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentTop="false"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/round_btn_bg"
-        android:elevation="4dp"
-        android:text="Download Receipt"
-        android:textColor="#fff"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="77dp"
-        tools:layout_editor_absoluteY="303dp" />
 
 </LinearLayout>

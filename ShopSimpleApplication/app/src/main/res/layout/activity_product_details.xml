@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProductDetails">
+    tools:context=".ProductDetails"
+    android:background="#eaf3e3">
 
     <ImageView
         android:id="@+id/product_image_details"
@@ -91,7 +92,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="2dp"
         android:orientation="horizontal"
-        android:weightSum="2">
+        android:weightSum="2"
+        android:background="#eaf3e3">
 
         <Button
             android:id="@+id/backScan"
