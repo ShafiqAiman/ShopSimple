@@ -82,6 +82,7 @@ public class CartActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference Cart, delete;
     String a = "";
+    String CName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +108,7 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
 
+                CName = documentSnapshot.getString("Name");
                 a = documentSnapshot.getString("PhoneNo");
                 database = FirebaseDatabase.getInstance();
                 Cart = database.getReference("Cart").child(a);
@@ -215,6 +217,8 @@ public class CartActivity extends AppCompatActivity {
                         intent.putExtra("pPrice",PPriceArray);
                         intent.putExtra("pQuantity",PQuantityArray);
                         intent.putExtra("count",String.valueOf(childCount));
+                        intent.putExtra("CName",CName);
+                        intent.putExtra("CPhone",a);
                         startActivity(intent);
                         Cart.removeValue();
 

@@ -65,7 +65,7 @@ public class receipt extends AppCompatActivity {
     Date dateObj;
     DateFormat dateFormat;
     int pageWidth = 2000;
-    public static String CustName, CustPhone;
+    public static String CName, CPhone;
     //RecyclerView recyclerView;
     //RecyclerView.LayoutManager layoutManager;
     //FirebaseRecyclerAdapter<com.example.shopsimpleapplication.Model.Receipt, CartViewHolder>adapter;
@@ -96,15 +96,7 @@ public class receipt extends AppCompatActivity {
 
 
         //get Customer Name and Phone Number
-        DocumentReference documentReference = fStore.collection("users").document(userId);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
 
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                CustName = documentSnapshot.getString("Name");
-                CustPhone = documentSnapshot.getString("PhoneNo");
-            }
-        });
 
         //to get total price from cart
         Intent intent = getIntent();
@@ -118,6 +110,9 @@ public class receipt extends AppCompatActivity {
         String count = intent.getStringExtra("count");
         int Count = Integer.parseInt(count);
 
+        CName = intent.getStringExtra("CName");
+        CPhone = intent.getStringExtra("CPhone");
+
         String str = pID+System.getProperty("line.separator")+pName+System.getProperty("line.separator");
 
 
@@ -129,7 +124,7 @@ public class receipt extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
 
         //load CartDetails();
-        createPDF(totalPrice, pID, pName, pPrice, pQuantity, Count, CustPhone, CustName);
+        createPDF(totalPrice, pID, pName, pPrice, pQuantity, Count, CPhone, CName);
 
 
     }
@@ -139,114 +134,103 @@ public class receipt extends AppCompatActivity {
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void createPDF(final String totalPrice, final String[] pID, final String[] pName, final String[] pPrice, final String[] pQuantity, final int count, String Custphone, String Custname) {
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(View vi) {
+    private void createPDF(final String totalPrice, final String[] pID, final String[] pName, final String[] pPrice, final String[] pQuantity, final int count, String CPhone, String CName) {
+        dateObj = new Date();
 
 
-                dateObj = new Date();
+        PdfDocument myPdfDocument = new PdfDocument();
+        Paint myPaint = new Paint();
+        Paint titlePaint = new Paint();
+
+        PdfDocument.PageInfo myPageInfo1 = new PdfDocument.PageInfo.Builder(2000, 2010, 1).create();
+        PdfDocument.Page myPage1 = myPdfDocument.startPage(myPageInfo1);
+        Canvas canvas = myPage1.getCanvas();
+
+        titlePaint.setTextAlign(Paint.Align.CENTER);
+        titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.ITALIC));
+        titlePaint.setTextSize(70);
+        canvas.drawText("INVOICE", pageWidth / 2, 500, titlePaint);
 
 
-                PdfDocument myPdfDocument = new PdfDocument();
-                Paint myPaint = new Paint();
-                Paint titlePaint = new Paint();
+        myPaint.setTextAlign(Paint.Align.LEFT);
+        myPaint.setTextSize(35f);
+        myPaint.setColor(Color.BLACK);
+        canvas.drawText("Customer Name: " + CName, 40, 590, myPaint);
+        canvas.drawText("Contact No.:" + CPhone, 40, 640, myPaint);
 
-                PdfDocument.PageInfo myPageInfo1 = new PdfDocument.PageInfo.Builder(2000, 2010, 1).create();
-                PdfDocument.Page myPage1 = myPdfDocument.startPage(myPageInfo1);
-                Canvas canvas = myPage1.getCanvas();
+        myPaint.setTextAlign(Paint.Align.LEFT);
+        myPaint.setTextSize(35f);
+        myPaint.setColor(Color.BLACK);
+        canvas.drawText("Invoice No: " + System.currentTimeMillis(), 40, 690, myPaint);
 
-                titlePaint.setTextAlign(Paint.Align.CENTER);
-                titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.ITALIC));
-                titlePaint.setTextSize(70);
-                canvas.drawText("INVOICE", pageWidth / 2, 500, titlePaint);
+        dateFormat = new SimpleDateFormat("dd/MM/yy");
+        canvas.drawText("Date: " + dateFormat.format(dateObj), 40, 740, myPaint);
 
+        dateFormat = new SimpleDateFormat("HH:mm:ss");
+        canvas.drawText("Time: " + dateFormat.format(dateObj), 40, 790, myPaint);
 
-                myPaint.setTextAlign(Paint.Align.LEFT);
-                myPaint.setTextSize(35f);
-                myPaint.setColor(Color.BLACK);
-                canvas.drawText("Customer Name: " + CustName, 40, 590, myPaint);
-                canvas.drawText("Contact No.:" + CustPhone, 40, 640, myPaint);
+        myPaint.setStyle(Paint.Style.STROKE);
+        myPaint.setStrokeWidth(2);
+        canvas.drawRect(20, 810, pageWidth - 150, 860, myPaint);
 
-                myPaint.setTextAlign(Paint.Align.LEFT);
-                myPaint.setTextSize(35f);
-                myPaint.setColor(Color.BLACK);
-                canvas.drawText("Invoice No: " + System.currentTimeMillis(), 40, 690, myPaint);
+        myPaint.setTextAlign(Paint.Align.LEFT);
+        myPaint.setStyle(Paint.Style.FILL);
+        canvas.drawText("Product Id", 65, 850, myPaint);
+        canvas.drawText("Item Name", 380, 850, myPaint);
+        canvas.drawText("Price", 1230, 850, myPaint);
+        canvas.drawText("Qty", 1410, 850, myPaint);
+        canvas.drawText("Total", 1580, 850, myPaint);
 
-                dateFormat = new SimpleDateFormat("dd/MM/yy");
-                canvas.drawText("Date: " + dateFormat.format(dateObj), 40, 740, myPaint);
+        canvas.drawLine(360, 820, 360, 850, myPaint);
+        canvas.drawLine(1170, 820, 1170, 850, myPaint);
+        canvas.drawLine(1380, 820, 1380, 850, myPaint);
+        canvas.drawLine(1500, 820, 1500, 850, myPaint);
 
-                dateFormat = new SimpleDateFormat("HH:mm:ss");
-                canvas.drawText("Time: " + dateFormat.format(dateObj), 40, 790, myPaint);
+        //image in pdf
+        canvas.drawBitmap(scaledBitmap, 30, 40, myPaint);
 
-                myPaint.setStyle(Paint.Style.STROKE);
-                myPaint.setStrokeWidth(2);
-                canvas.drawRect(20, 810, pageWidth - 150, 860, myPaint);
+        int b = 900;
 
-                myPaint.setTextAlign(Paint.Align.LEFT);
-                myPaint.setStyle(Paint.Style.FILL);
-                canvas.drawText("Product Id", 65, 850, myPaint);
-                canvas.drawText("Item Name", 380, 850, myPaint);
-                canvas.drawText("Price", 1230, 850, myPaint);
-                canvas.drawText("Qty", 1410, 850, myPaint);
-                canvas.drawText("Total", 1580, 850, myPaint);
+        for (int i = 0; i < count; i++) {
 
-                canvas.drawLine(360, 820, 360, 850, myPaint);
-                canvas.drawLine(1170, 820, 1170, 850, myPaint);
-                canvas.drawLine(1380, 820, 1380, 850, myPaint);
-                canvas.drawLine(1500, 820, 1500, 850, myPaint);
+            canvas.drawText(pID[i], 65, b, myPaint);
+            canvas.drawText(pName[i], 380, b, myPaint);
+            canvas.drawText(pPrice[i], 1230, b, myPaint);
+            canvas.drawText(pQuantity[i], 1410, b, myPaint);
+            b = b + 50;
+        }
 
-                //image in pdf
-                canvas.drawBitmap(scaledBitmap, 30, 40, myPaint);
-
-                int b = 900;
-
-                for (int i = 0; i < count; i++) {
-
-                    canvas.drawText(pID[i], 65, b, myPaint);
-                    canvas.drawText(pName[i], 380, b, myPaint);
-                    canvas.drawText(pPrice[i], 1230, b, myPaint);
-                    canvas.drawText(pQuantity[i], 1410, b, myPaint);
-                    b = b + 50;
-                }
-
-                myPaint.setTextAlign(Paint.Align.LEFT);
-                canvas.drawLine(65, b - 20, pageWidth - 150, b - 20, myPaint);
-                canvas.drawText("" + totalPrice, 1580, b + 15, myPaint);
+        myPaint.setTextAlign(Paint.Align.LEFT);
+        canvas.drawLine(20, b - 20, pageWidth - 150, b - 20, myPaint);
+        canvas.drawText("" + totalPrice, 1580, b + 15, myPaint);
 
 
-                myPdfDocument.finishPage(myPage1);
+        myPdfDocument.finishPage(myPage1);
 
-                dateFormat = new SimpleDateFormat("HHmmss");
-                time = dateFormat.format(dateObj);
-                dateFormat = new SimpleDateFormat("ddMMyy");
-                y = dateFormat.format(dateObj);
-                File file = new File(Environment.getExternalStorageDirectory(), time + "_" + y + ".pdf");
+        dateFormat = new SimpleDateFormat("HHmmss");
+        time = dateFormat.format(dateObj);
+        dateFormat = new SimpleDateFormat("ddMMyy");
+        y = dateFormat.format(dateObj);
+        File file = new File(Environment.getExternalStorageDirectory(), time + "_" + y + ".pdf");
 
-                try {
-                    myPdfDocument.writeTo(new FileOutputStream(file));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        try {
+            myPdfDocument.writeTo(new FileOutputStream(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-                myPdfDocument.close();
+        myPdfDocument.close();
 
-                //selectPDFFile();
+        //selectPDFFile();
 
-                uploadPDFFile(file);
+        uploadPDFFile(file);
 
-                Intent intent = new Intent(receipt.this, PurchaseHistory.class);
-                startActivity(intent);
-
-
-                Toast.makeText(receipt.this, "Receipt Downloaded", Toast.LENGTH_SHORT).show();
-                Toast.makeText(receipt.this, "" + CustName, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(receipt.this, PurchaseHistory.class);
+        startActivity(intent);
 
 
-
-            }
-        });
+        Toast.makeText(receipt.this, "Receipt Downloaded", Toast.LENGTH_SHORT).show();
+        Toast.makeText(receipt.this, "" + CName, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -256,13 +240,13 @@ public class receipt extends AppCompatActivity {
         dateObj = new Date();
 
         dateFormat = new SimpleDateFormat("ddMMyy");
-        z = CustPhone + "_" + dateFormat.format(dateObj);
+        z = CPhone + "_" + dateFormat.format(dateObj);
         a = dateFormat.format(dateObj);
         dateFormat = new SimpleDateFormat("HHmmss");
         time = dateFormat.format(dateObj);
         w = z +"_"+ time;
 
-        StorageReference reference = storageReference.child(CustPhone+ "/"+ w +".pdf");
+        StorageReference reference = storageReference.child(CPhone+ "/"+ w +".pdf");
         reference.putFile(Uri.fromFile(data))
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -273,9 +257,9 @@ public class receipt extends AppCompatActivity {
                         Uri url = uri.getResult();
 
                         dateFormat = new SimpleDateFormat("ddMMyy");
-                        x = CustPhone + "_" + dateFormat.format(dateObj);
+                        x = CPhone + "_" + dateFormat.format(dateObj);
                         uploadPDF uploadPDF = new uploadPDF( a + "_" + time + ".pdf",url.toString());
-                        databaseReference.child(CustPhone).child(databaseReference.push().getKey()).setValue(uploadPDF);
+                        databaseReference.child(CPhone).child(databaseReference.push().getKey()).setValue(uploadPDF);
                     }
                 }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override

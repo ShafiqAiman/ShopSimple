@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="@font/raleway_semibold"
-            android:text="Total Price = "
+            android:text="Total Price = RM 0.00"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="20dp" />
