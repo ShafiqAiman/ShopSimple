@@ -10,6 +10,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -60,6 +62,7 @@ public class receipt extends AppCompatActivity {
     Button createButton;
     Date dateObj;
     DateFormat dateFormat;
+    Bitmap bmp, scaledBitmap;
     int pageWidth = 2000;
     public static String CustName, CustPhone;
     //RecyclerView recyclerView;
@@ -80,6 +83,10 @@ public class receipt extends AppCompatActivity {
         fStorage = FirebaseStorage.getInstance();
 
         userId = fAuth.getCurrentUser().getUid();
+
+        //put image logo inside pdf
+        bmp = BitmapFactory.decodeResource(getResources(), R.drawable.logo_shopsimple);
+        scaledBitmap = Bitmap.createScaledBitmap(bmp,550, 500,false);
 
         //to get total price from cart
         Intent intent = getIntent();
@@ -137,7 +144,7 @@ public class receipt extends AppCompatActivity {
                 Paint myPaint = new Paint();
                 Paint titlePaint = new Paint();
 
-                PdfDocument.PageInfo myPageInfo1 = new PdfDocument.PageInfo.Builder(2000, 2010, 1).create();
+                PdfDocument.PageInfo myPageInfo1 = new PdfDocument.PageInfo.Builder(1900, 2010, 1).create();
                 PdfDocument.Page myPage1 = myPdfDocument.startPage(myPageInfo1);
                 Canvas canvas = myPage1.getCanvas();
 
@@ -150,24 +157,24 @@ public class receipt extends AppCompatActivity {
                 myPaint.setTextAlign(Paint.Align.LEFT);
                 myPaint.setTextSize(35f);
                 myPaint.setColor(Color.BLACK);
-                canvas.drawText("Customer Name: " + CustName, 20, 590, myPaint);
-                canvas.drawText("Contact No.:" + CustPhone, 20, 640, myPaint);
+                canvas.drawText("Customer Name: " + CustName, 40, 590, myPaint);
+                canvas.drawText("Contact No.:" + CustPhone, 40, 640, myPaint);
 
                 myPaint.setTextAlign(Paint.Align.LEFT);
                 myPaint.setTextSize(35f);
                 myPaint.setColor(Color.BLACK);
                 int a = 0;
-                canvas.drawText("Invoice No: 01", 20, 690, myPaint);
+                canvas.drawText("Invoice No: "+"01", 40, 690, myPaint);
 
                 dateFormat = new SimpleDateFormat("dd/MM/yy");
-                canvas.drawText("Date: " + dateFormat.format(dateObj), 20, 740, myPaint);
+                canvas.drawText("Date: " + dateFormat.format(dateObj), 40, 740, myPaint);
 
                 dateFormat = new SimpleDateFormat("HH:mm:ss");
-                canvas.drawText("Time: " + dateFormat.format(dateObj), 20, 790, myPaint);
+                canvas.drawText("Time: " + dateFormat.format(dateObj), 40, 790, myPaint);
 
                 myPaint.setStyle(Paint.Style.STROKE);
                 myPaint.setStrokeWidth(2);
-                canvas.drawRect(20, 810, pageWidth - 20, 860, myPaint);
+                canvas.drawRect(30, 810, pageWidth - 150, 860, myPaint);
 
                 myPaint.setTextAlign(Paint.Align.LEFT);
                 myPaint.setStyle(Paint.Style.FILL);
@@ -182,6 +189,8 @@ public class receipt extends AppCompatActivity {
                 canvas.drawLine(1380, 820, 1380, 850, myPaint);
                 canvas.drawLine(1500, 820, 1500, 850, myPaint);
 
+                //image in pdf
+                canvas.drawBitmap(scaledBitmap,30,40,myPaint);
 
                 int b = 900;
 
@@ -193,8 +202,9 @@ public class receipt extends AppCompatActivity {
                     canvas.drawText(pQuantity[i], 1410, b, myPaint);
                     b = b+50;
                 }
-
-                canvas.drawText("" + totalPrice, 1580, 900, myPaint);
+                myPaint.setTextAlign(Paint.Align.LEFT);
+                canvas.drawLine(65, b-20, pageWidth-150, b-20, myPaint);
+                canvas.drawText("" + totalPrice, 1580, b+15, myPaint);
                 //canvas.drawText("" + productPRICE, 20, 640, myPaint);
                 //canvas.drawText("" + productQUANTITY, 20, 640, myPaint);
 
