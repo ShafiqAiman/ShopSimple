@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
@@ -48,7 +49,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class receipt extends AppCompatActivity {
-
+    Button createButton;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     FirebaseDatabase database;
@@ -79,7 +80,7 @@ public class receipt extends AppCompatActivity {
         setContentView(R.layout.activity_receipt);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
+        createButton = findViewById(R.id.create_Button);
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         fStorage = FirebaseStorage.getInstance();
@@ -93,6 +94,17 @@ public class receipt extends AppCompatActivity {
         bmp = BitmapFactory.decodeResource(getResources(), R.drawable.logo_final);
         scaledBitmap = Bitmap.createScaledBitmap(bmp,550, 500,false);
 
+
+        //get Customer Name and Phone Number
+        DocumentReference documentReference = fStore.collection("users").document(userId);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                CustName = documentSnapshot.getString("Name");
+                CustPhone = documentSnapshot.getString("PhoneNo");
+            }
+        });
 
         //to get total price from cart
         Intent intent = getIntent();
@@ -110,27 +122,14 @@ public class receipt extends AppCompatActivity {
 
 
 
-        DocumentReference documentReference = fStore.collection("users").document(userId);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
 
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                CustName = documentSnapshot.getString("Name");
-                CustPhone = documentSnapshot.getString("PhoneNo");
-            }
-        });
 
 
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
 
-        //loadCartDetails();
-        createPDF(totalPrice, pID, pName, pPrice, pQuantity, Count);
-
-        Intent i = new Intent(receipt.this, PurchaseHistory.class);
-        startActivity(i);
-
-
+        //load CartDetails();
+        createPDF(totalPrice, pID, pName, pPrice, pQuantity, Count, CustPhone, CustName);
 
 
     }
@@ -140,10 +139,13 @@ public class receipt extends AppCompatActivity {
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void createPDF(final String totalPrice, final String[] pID, final String[] pName, final String[] pPrice, final String[] pQuantity, final int count) {
+    private void createPDF(final String totalPrice, final String[] pID, final String[] pName, final String[] pPrice, final String[] pQuantity, final int count, String Custphone, String Custname) {
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onClick(View vi) {
 
 
-                //Toast.makeText(receipt.this, pName[0], Toast.LENGTH_LONG).show();
                 dateObj = new Date();
 
 
@@ -170,7 +172,7 @@ public class receipt extends AppCompatActivity {
                 myPaint.setTextAlign(Paint.Align.LEFT);
                 myPaint.setTextSize(35f);
                 myPaint.setColor(Color.BLACK);
-                canvas.drawText("Invoice No: "+ System.currentTimeMillis(), 40, 690, myPaint);
+                canvas.drawText("Invoice No: " + System.currentTimeMillis(), 40, 690, myPaint);
 
                 dateFormat = new SimpleDateFormat("dd/MM/yy");
                 canvas.drawText("Date: " + dateFormat.format(dateObj), 40, 740, myPaint);
@@ -196,32 +198,31 @@ public class receipt extends AppCompatActivity {
                 canvas.drawLine(1500, 820, 1500, 850, myPaint);
 
                 //image in pdf
-                canvas.drawBitmap(scaledBitmap,30,40,myPaint);
+                canvas.drawBitmap(scaledBitmap, 30, 40, myPaint);
 
                 int b = 900;
 
-                for (int i=0;i<count;i++){
+                for (int i = 0; i < count; i++) {
 
                     canvas.drawText(pID[i], 65, b, myPaint);
                     canvas.drawText(pName[i], 380, b, myPaint);
                     canvas.drawText(pPrice[i], 1230, b, myPaint);
                     canvas.drawText(pQuantity[i], 1410, b, myPaint);
-                    b = b+50;
+                    b = b + 50;
                 }
 
                 myPaint.setTextAlign(Paint.Align.LEFT);
-                canvas.drawLine(65, b-20, pageWidth-150, b-20, myPaint);
-                canvas.drawText("" + totalPrice, 1580, b+15, myPaint);
+                canvas.drawLine(65, b - 20, pageWidth - 150, b - 20, myPaint);
+                canvas.drawText("" + totalPrice, 1580, b + 15, myPaint);
 
 
-
-        myPdfDocument.finishPage(myPage1);
+                myPdfDocument.finishPage(myPage1);
 
                 dateFormat = new SimpleDateFormat("HHmmss");
                 time = dateFormat.format(dateObj);
                 dateFormat = new SimpleDateFormat("ddMMyy");
                 y = dateFormat.format(dateObj);
-                File file = new File(Environment.getExternalStorageDirectory(),  time + "_" + y + ".pdf");
+                File file = new File(Environment.getExternalStorageDirectory(), time + "_" + y + ".pdf");
 
                 try {
                     myPdfDocument.writeTo(new FileOutputStream(file));
@@ -238,12 +239,15 @@ public class receipt extends AppCompatActivity {
                 Intent intent = new Intent(receipt.this, PurchaseHistory.class);
                 startActivity(intent);
 
-                Toast.makeText(receipt.this, "Receipt Downloaded", Toast.LENGTH_SHORT).show();
 
+                Toast.makeText(receipt.this, "Receipt Downloaded", Toast.LENGTH_SHORT).show();
+                Toast.makeText(receipt.this, "" + CustName, Toast.LENGTH_SHORT).show();
 
 
 
             }
+        });
+    }
 
 
 
