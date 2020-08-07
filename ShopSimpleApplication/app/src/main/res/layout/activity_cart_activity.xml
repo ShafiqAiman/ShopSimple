@@ -21,22 +21,15 @@
         android:id="@+id/r111"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#55b599"
+        android:background="@color/colorPrimary"
+        android:paddingTop="10dp"
         android:layout_alignParentTop="true">
 
-        <TextView
-            android:id="@+id/space"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Total Price = "
-            android:textSize="20dp"
-            android:textColor="@android:color/white"
-            android:textAlignment="center"/>
+
         <TextView
             android:id="@+id/total_price"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/space"
             android:text="Total Price = "
             android:textSize="20dp"
             android:textColor="@android:color/white"
