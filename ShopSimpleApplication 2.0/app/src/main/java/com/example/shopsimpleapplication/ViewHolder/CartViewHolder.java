@@ -13,7 +13,7 @@ import com.example.shopsimpleapplication.R;
 
 public class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    public TextView productNAME,productPRICE, productQUANTITY,productarray;
+    public TextView productNAME,productPRICE, productQUANTITY;
     public Button deleteBtn;
 
     private ItemClickListener itemClickListener;

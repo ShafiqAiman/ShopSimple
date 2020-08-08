@@ -8,16 +8,8 @@
     android:orientation="vertical"
     android:paddingTop="20dp"
     tools:context=".receipt"
-    android:background="#fff">
+    android:background="#eaf3e3">
 
-
-    <ImageView
-        android:id="@+id/logo_image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:paddingTop="-20dp"
-        android:src="@drawable/logo"
-        />
 
 
     <TextView
@@ -25,10 +17,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="150dp"
         android:fontFamily="@font/raleway_medium_italic"
         android:text="Download Receipt Here"
         android:textSize="30sp"
+        android:textColor="@color/colorPrimary"
         tools:layout_editor_absoluteX="27dp"
         tools:layout_editor_absoluteY="188dp" />
 
@@ -40,7 +34,8 @@
         android:layout_alignParentTop="false"
         android:layout_marginLeft="70dp"
         android:layout_marginTop="100dp"
-        android:background="#55b599"
+        android:background="@drawable/round_btn_bg"
+        android:fontFamily="@font/raleway_semibold"
         android:elevation="4dp"
         android:text="Download Receipt"
         android:textColor="#fff"

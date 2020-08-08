@@ -56,13 +56,14 @@ public class CartActivity extends AppCompatActivity {
 
     private double TotalPrice = 0.00;
 
-    private String[] PIDArray = new String[0];
-    private String[] PNameArray = new String[0];
-    private String[] PPriceArray = new String[0];
-    private String[] PQuantityArray = new String[0];
+    private String[] PIDArray = null;
+    private String[] PNameArray = null;
+    private String[] PPriceArray = null;
+    private String[] PQuantityArray = null;
 
     private int childCount = 0;
     private int m = 0;
+    private int g = 0;
 
     private static String Amount = "";
     public static final String EXTRA_NUMBER= "com.example.shopsimpleapplication.EXTRA_TEXT";
@@ -104,6 +105,8 @@ public class CartActivity extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
 
         userId = fAuth.getCurrentUser().getUid();
+
+        m=0;
 
         DocumentReference documentReference = fStore.collection("users").document(userId);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
@@ -221,6 +224,7 @@ public class CartActivity extends AppCompatActivity {
                         intent.putExtra("count",String.valueOf(childCount));
                         intent.putExtra("CName",CName);
                         intent.putExtra("CPhone",a);
+                        //m = 0;
                         startActivity(intent);
                         Cart.removeValue();
 
@@ -278,12 +282,15 @@ public class CartActivity extends AppCompatActivity {
                 TotalPrice = TotalPrice + DProductPrice;
                 DecimalFormat df2 = new DecimalFormat("#,###,##0.00");
 
-                PIDArray[m] = cart.getId();
-                PNameArray[m] = cart.getName();
-                PPriceArray[m] = cart.getPrice();
-                PQuantityArray[m] = cart.getQuantity();
+                if (m < childCount){
+                    PIDArray[m] = cart.getId();
+                    PNameArray[m] = cart.getName();
+                    PPriceArray[m] = cart.getPrice();
+                    PQuantityArray[m] = cart.getQuantity();
 
-                m++;
+                    ++m;
+                }
+
 
                 TotalAmount.setText("Total Price = RM"+String.valueOf(df2.format(TotalPrice)));
                 final com.example.shopsimpleapplication.Model.Cart local = cart;
@@ -308,7 +315,7 @@ public class CartActivity extends AppCompatActivity {
                         TotalPrice = TotalPrice - DProductPrice;
                         DecimalFormat df2 = new DecimalFormat("#,###,##0.00");
                         TotalAmount.setText("Total Price = RM"+String.valueOf(df2.format(TotalPrice)));
-
+                        //Amount = TotalAmount.getText().toString();
                     }
                 });
 

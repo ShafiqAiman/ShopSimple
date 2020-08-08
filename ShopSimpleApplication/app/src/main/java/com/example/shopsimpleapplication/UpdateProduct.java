@@ -80,10 +80,14 @@ public class UpdateProduct extends AppCompatActivity {
                             public void onClick(View v) {
 
                                 //order.child(phoneNo).child(pid).removeValue();
+
                                 Cart cart = new Cart(product.getName(),product.getPrice(), numberButton.getNumber(),product.getId());
-                                //Toast.makeText(ProductDetails.this,a,Toast.LENGTH_SHORT).show();
                                 order.child(phoneNo).child(pid).setValue(cart);
                                 Toast.makeText(UpdateProduct.this,"Item is updated",Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(UpdateProduct.this, CartActivity.class);
+                                startActivity(intent);
+
+
 
 
                             }

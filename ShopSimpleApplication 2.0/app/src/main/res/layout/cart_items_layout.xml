@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp"
     app:cardElevation="4dp"
-    android:background="@color/colorPrimary"
+    android:background="@color/colorPrimaryDark"
     >
 
     <LinearLayout
@@ -28,35 +28,38 @@
 
             <TextView
                 android:id="@+id/cart_productName"
-                android:layout_marginLeft="10dp"
-                android:gravity="center_vertical|start"
-                android:textAllCaps="true"
-                android:textStyle="bold"
-                android:text="Product 1"
-                android:textColor="@android:color/white"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/raleway"
+                android:gravity="center_vertical|start"
+                android:text="Product 1"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/cart_productPrice"
-                android:layout_marginLeft="10dp"
-                android:gravity="center_vertical|start"
-                android:textAllCaps="true"
-                android:textStyle="italic"
-                android:text="RM 10000"
-                android:textColor="@android:color/white"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/raleway_italic"
+                android:gravity="center_vertical|start"
+                android:text="RM 10000"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:textStyle="italic" />
 
             <TextView
                 android:id="@+id/cart_productQuantity"
-                android:layout_marginLeft="10dp"
-                android:gravity="center_vertical|start"
-                android:textAllCaps="true"
-                android:text="3"
-                android:textColor="@android:color/white"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/raleway"
+                android:gravity="center_vertical|start"
+                android:text="3"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white" />
 
 
         </LinearLayout>
@@ -65,7 +68,11 @@
             android:id="@+id/deleteBtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Delete"/>
+            android:background="@drawable/round_btn_bg"
+            android:fontFamily="@font/raleway_bold"
+            android:text="Delete"
+            android:textColor="@color/colorAccent"
+            android:layout_marginRight="5dp"/>
 
 
 

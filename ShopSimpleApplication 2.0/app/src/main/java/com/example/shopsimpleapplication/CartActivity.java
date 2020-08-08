@@ -1,65 +1,69 @@
 package com.example.shopsimpleapplication;
 
-        import androidx.annotation.NonNull;
-        import androidx.annotation.Nullable;
-        import androidx.appcompat.app.AppCompatActivity;
-        import androidx.recyclerview.widget.LinearLayoutManager;
-        import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-        import android.app.Activity;
-        import android.content.Intent;
-        import android.net.Uri;
-        import android.os.Bundle;
-        import android.os.Parcelable;
-        import android.util.Log;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.TextView;
-        import android.widget.Toast;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
-        import com.example.shopsimpleapplication.ViewHolder.CartViewHolder;
-        import com.google.firebase.auth.FirebaseAuth;
-        import com.google.firebase.database.DataSnapshot;
-        import com.google.firebase.database.DatabaseError;
-        import com.google.firebase.database.DatabaseReference;
-        import com.google.firebase.database.FirebaseDatabase;
-        import com.firebase.ui.database.FirebaseRecyclerAdapter;
-        import com.google.firebase.database.ValueEventListener;
-        import com.google.firebase.firestore.DocumentReference;
-        import com.google.firebase.firestore.DocumentSnapshot;
-        import com.google.firebase.firestore.EventListener;
-        import com.google.firebase.firestore.FirebaseFirestore;
-        import com.google.firebase.firestore.FirebaseFirestoreException;
-        import com.paypal.android.sdk.payments.PayPalAuthorization;
-        import com.paypal.android.sdk.payments.PayPalConfiguration;
-        import com.paypal.android.sdk.payments.PayPalFuturePaymentActivity;
-        import com.paypal.android.sdk.payments.PayPalPayment;
-        import com.paypal.android.sdk.payments.PayPalService;
-        import com.paypal.android.sdk.payments.PaymentActivity;
-        import com.paypal.android.sdk.payments.PaymentConfirmation;
+import com.example.shopsimpleapplication.Interface.ItemClickListener;
+import com.example.shopsimpleapplication.Model.Cart;
+import com.example.shopsimpleapplication.ViewHolder.CartViewHolder;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.paypal.android.sdk.payments.PayPalAuthorization;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalFuturePaymentActivity;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 
-        import org.json.JSONException;
+import org.json.JSONException;
 
-        import java.math.BigDecimal;
-        import java.text.DecimalFormat;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 public class CartActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private Button pay;
+    private Button pay,ClearAll;
     private TextView TotalAmount;
 
     private double TotalPrice = 0.00;
 
-    private String[] PIDArray = new String[0];
-    private String[] PNameArray = new String[0];
-    private String[] PPriceArray = new String[0];
-    private String[] PQuantityArray = new String[0];
+    private String[] PIDArray = null;
+    private String[] PNameArray = null;
+    private String[] PPriceArray = null;
+    private String[] PQuantityArray = null;
 
     private int childCount = 0;
     private int m = 0;
+    private int g = 0;
 
     private static String Amount = "";
     public static final String EXTRA_NUMBER= "com.example.shopsimpleapplication.EXTRA_TEXT";
@@ -81,11 +85,13 @@ public class CartActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference Cart, delete;
     String a = "";
+    String CName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart_activity);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         recyclerView = findViewById(R.id.cart_list);
         recyclerView.setHasFixedSize(true);
@@ -100,11 +106,14 @@ public class CartActivity extends AppCompatActivity {
 
         userId = fAuth.getCurrentUser().getUid();
 
+        m=0;
+
         DocumentReference documentReference = fStore.collection("users").document(userId);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
 
+                CName = documentSnapshot.getString("Name");
                 a = documentSnapshot.getString("PhoneNo");
                 database = FirebaseDatabase.getInstance();
                 Cart = database.getReference("Cart").child(a);
@@ -112,7 +121,6 @@ public class CartActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         childCount = (int) snapshot.getChildrenCount();
-                        //Toast.makeText(CartActivity.this,String.valueOf(childCount),Toast.LENGTH_SHORT).show();
                         PIDArray = new String[childCount];
                         PNameArray = new String[childCount];
                         PPriceArray = new String[childCount];
@@ -125,11 +133,25 @@ public class CartActivity extends AppCompatActivity {
 
                     }
                 });
+
                 loadCart();
 
             }
         });
 
+
+        ClearAll =(Button)findViewById(R.id.clearCart);
+        ClearAll.setOnClickListener(new View.OnClickListener()
+
+        {
+
+            @Override
+            public void onClick (View v){
+
+               Cart.removeValue();
+            }
+
+        });
 
         pay =(Button)findViewById(R.id.payBtn);
         pay.setOnClickListener(new View.OnClickListener()
@@ -138,6 +160,7 @@ public class CartActivity extends AppCompatActivity {
 
             @Override
             public void onClick (View v){
+
                 MakePayment();
             }
 
@@ -172,8 +195,6 @@ public class CartActivity extends AppCompatActivity {
         payment.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         startActivityForResult(payment, REQUEST_CODE_PAYMENT);
 
-
-
     }
 
     @Override
@@ -191,7 +212,6 @@ public class CartActivity extends AppCompatActivity {
                         System.out.println(confirm.getPayment().toJSONObject().toString(4));
                         Toast.makeText(this, "Payment Successful", Toast.LENGTH_LONG).show();
 
-                        //send total price to receipt
                         DecimalFormat df = new DecimalFormat("#,###,##0.00");
                         //priceTotal = df.format(TotalPrice);
                         //Double priceTotal = Double.parseDouble(String.valueOf(TotalPrice));
@@ -202,8 +222,11 @@ public class CartActivity extends AppCompatActivity {
                         intent.putExtra("pPrice",PPriceArray);
                         intent.putExtra("pQuantity",PQuantityArray);
                         intent.putExtra("count",String.valueOf(childCount));
-                        //Cart.removeValue();
+                        intent.putExtra("CName",CName);
+                        intent.putExtra("CPhone",a);
+                        //m = 0;
                         startActivity(intent);
+                        Cart.removeValue();
 
                     } catch (JSONException e) {
 
@@ -259,24 +282,36 @@ public class CartActivity extends AppCompatActivity {
                 TotalPrice = TotalPrice + DProductPrice;
                 DecimalFormat df2 = new DecimalFormat("#,###,##0.00");
 
-                //itemArray[m] = new String[]{cart.getId(), cart.getName(), cart.getPrice(), cart.getQuantity()};
+                if (m < childCount){
+                    PIDArray[m] = cart.getId();
+                    PNameArray[m] = cart.getName();
+                    PPriceArray[m] = cart.getPrice();
+                    PQuantityArray[m] = cart.getQuantity();
 
-                PIDArray[m] = cart.getId();
-                PNameArray[m] = cart.getName();
-                PPriceArray[m] = cart.getPrice();
-                PQuantityArray[m] = cart.getQuantity();
+                    ++m;
+                }
 
-                //Toast.makeText(CartActivity.this,PNameArray[1],Toast.LENGTH_SHORT).show();
-
-                m++;
 
                 TotalAmount.setText("Total Price = RM"+String.valueOf(df2.format(TotalPrice)));
+                final com.example.shopsimpleapplication.Model.Cart local = cart;
+
+                cartViewHolder.setItemClickListener(new ItemClickListener() {
+                    @Override
+                    public void onClick(View view, int position, boolean isLongClick) {
+                        Intent update = new Intent(CartActivity.this, UpdateProduct.class);
+                        update.putExtra("ID",cart.getId());
+                        update.putExtra("CPhone1",a);
+                        update.putExtra("quantity",cart.getQuantity());
+                        startActivity(update);
+                    }
+                });
 
                 cartViewHolder.deleteBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Cart.child(cart.getId()).removeValue();
                         Toast.makeText(CartActivity.this,"This item is removed.",Toast.LENGTH_SHORT).show();
+
                         Double DProductPrice = ((Double.valueOf(cart.getPrice()))) * (Double.valueOf(cart.getQuantity()));
                         TotalPrice = TotalPrice - DProductPrice;
                         DecimalFormat df2 = new DecimalFormat("#,###,##0.00");
