@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.shopsimpleapplication.Interface.ItemClickListener;
+import com.example.shopsimpleapplication.Model.Cart;
 import com.example.shopsimpleapplication.ViewHolder.CartViewHolder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -284,7 +286,17 @@ public class CartActivity extends AppCompatActivity {
                 m++;
 
                 TotalAmount.setText("Total Price = RM"+String.valueOf(df2.format(TotalPrice)));
-                //final Cart local = cart;
+                final com.example.shopsimpleapplication.Model.Cart local = cart;
+
+                cartViewHolder.setItemClickListener(new ItemClickListener() {
+                    @Override
+                    public void onClick(View view, int position, boolean isLongClick) {
+                        Intent update = new Intent(CartActivity.this, UpdateProduct.class);
+                        update.putExtra("ID",cart.getId());
+                        update.putExtra("CPhone1",a);
+                        startActivity(update);
+                    }
+                });
 
                 cartViewHolder.deleteBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -296,7 +308,7 @@ public class CartActivity extends AppCompatActivity {
                         TotalPrice = TotalPrice - DProductPrice;
                         DecimalFormat df2 = new DecimalFormat("#,###,##0.00");
                         TotalAmount.setText("Total Price = RM"+String.valueOf(df2.format(TotalPrice)));
-                        //Amount = TotalAmount.getText().toString();
+
                     }
                 });
 

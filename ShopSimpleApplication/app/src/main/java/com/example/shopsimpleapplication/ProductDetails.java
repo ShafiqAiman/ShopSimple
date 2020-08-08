@@ -145,6 +145,7 @@ public class ProductDetails extends AppCompatActivity {
                                                 //Toast.makeText(ProductDetails.this,a,Toast.LENGTH_SHORT).show();
                                                 order.child(a).child(y).setValue(cart);
                                                 Toast.makeText(ProductDetails.this,"Item is added",Toast.LENGTH_SHORT).show();
+
                                                 //scanCode();
 
                                             }
