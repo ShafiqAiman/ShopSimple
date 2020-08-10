@@ -50,22 +50,46 @@
 
     </ListView>
 
-
-        <Button
-            android:id="@+id/backDashboard"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="false"
+            android:weightSum="2"
             android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="70dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/round_btn_bg"
-            android:fontFamily="@font/raleway_semibold"
             android:orientation="horizontal"
-            android:text="Dashboard"
-            android:textColor="#fff" />
+            android:id="@+id/buttons"
+            android:background="#eaf3e3">
+
+
+            <Button
+                android:id="@+id/backCartActivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_btn_bg"
+                android:fontFamily="@font/raleway_semibold"
+                android:text="Back"
+                android:textColor="@android:color/white"
+                android:textSize="20dp" />
+
+
+            <Button
+                android:id="@+id/backDashboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_btn_bg"
+                android:fontFamily="@font/raleway_semibold"
+                android:text="dashboard"
+                android:textColor="@android:color/white"
+                android:textSize="20dp" />
+
+
+
+        </LinearLayout>
 
     </RelativeLayout>
 

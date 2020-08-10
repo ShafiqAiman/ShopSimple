@@ -74,7 +74,6 @@
         android:id="@+id/add_to_cart_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/buttons"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="100dp"
@@ -85,45 +84,6 @@
         android:textColor="@android:color/white"
         android:textSize="18dp" />
 
-    <LinearLayout
-        android:id="@+id/buttons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="2dp"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        android:background="#eaf3e3">
 
-        <Button
-            android:id="@+id/backScan"
-            android:layout_width="199dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="14dp"
-            android:layout_weight="1"
-            android:background="@drawable/round_btn_bg"
-            android:text="Scanner"
-            android:textColor="@android:color/white"
-            android:textSize="18dp" />
-
-        <Button
-            android:id="@+id/toCart"
-            android:layout_width="199dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="14dp"
-            android:layout_weight="1"
-            android:background="@drawable/round_btn_bg"
-            android:text="Cart"
-            android:textColor="@android:color/white"
-            android:textSize="18dp" />
-
-    </LinearLayout>
 
 </RelativeLayout>

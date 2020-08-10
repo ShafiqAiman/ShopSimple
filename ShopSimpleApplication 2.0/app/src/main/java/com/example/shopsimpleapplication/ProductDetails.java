@@ -69,8 +69,8 @@ public class ProductDetails extends AppCompatActivity {
         productPrice = (TextView)findViewById(R.id.product_price_details);
         productId = (TextView)findViewById(R.id.product_ID);
         addToCartButton = (Button)findViewById(R.id.add_to_cart_button);
-        goCart = (Button)findViewById(R.id.toCart);
-        goScan = (Button)findViewById(R.id.backScan);
+        //goCart = (Button)findViewById(R.id.toCart);
+        //goScan = (Button)findViewById(R.id.backScan);
         scanCode();
 
         DocumentReference documentReference = fStore.collection("users").document(userId);
@@ -83,7 +83,7 @@ public class ProductDetails extends AppCompatActivity {
             }
         });
 
-        goCart.setOnClickListener(new View.OnClickListener() {
+        /*goCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ProductDetails.this, CartActivity.class);
@@ -102,7 +102,9 @@ public class ProductDetails extends AppCompatActivity {
             }
 
 
-        });
+        });*/
+
+
     }
 
     private void scanCode(){
@@ -146,7 +148,25 @@ public class ProductDetails extends AppCompatActivity {
                                                 order.child(a).child(y).setValue(cart);
                                                 Toast.makeText(ProductDetails.this,"Item is added",Toast.LENGTH_SHORT).show();
 
-                                                //scanCode();
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(ProductDetails.this);
+                                                //builder.setMessage("To scan more products press SCANNER button.");
+                                                //builder.setMessage("To proceed to shopping cart press CART button.");
+                                                //Toast.makeText(MainActivity.this, y, Toast.LENGTH_SHORT).show();
+                                                builder.setTitle("ITEM IS ADDED");
+                                                builder.setPositiveButton("Continue Scanning Products", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        scanCode();
+                                                    }
+                                                }).setNegativeButton("To Shopping Cart", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        Intent intent = new Intent(ProductDetails.this, CartActivity.class);
+                                                        startActivity(intent);
+                                                    }
+                                                });
+                                                AlertDialog dialog = builder.create();
+                                                dialog.show();
 
                                             }
                                         });
