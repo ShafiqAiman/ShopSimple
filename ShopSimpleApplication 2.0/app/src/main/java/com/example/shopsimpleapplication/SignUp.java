@@ -99,6 +99,12 @@ public class SignUp extends AppCompatActivity {
                     return;
                 }
 
+                String pwordValid = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$";
+
+                if(!password.matches(pwordValid)){
+                    regPassword.setError("Password must be combination of characters");
+                }
+
                 //register user to firebase
 
                 fAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {

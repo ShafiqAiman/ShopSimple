@@ -155,4 +155,14 @@ public class Login extends AppCompatActivity {
     }
 
     //private void startActivity(Intent intent) {
+
+    @Override
+    public void onBackPressed() {
+
+        //android.os.Process.killProcess(android.os.Process.myPid());
+        // This above line close correctly
+        Login.this.finish();
+        //System.exit(0);
+
+    }
     }

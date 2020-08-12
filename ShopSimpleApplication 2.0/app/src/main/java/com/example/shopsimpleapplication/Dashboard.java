@@ -42,7 +42,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_dashboard);
 
-        
+
 
         //define cards
         scanner = (CardView) findViewById(R.id.toScan);
@@ -117,7 +117,13 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         /*public void receiptgen(View v){
             startActivity(new Intent(getApplicationContext(),PurchaseHistory.class));
         }*/
+        @Override
+        public void onBackPressed() {
 
+            Intent intent = new Intent(this,Dashboard.class);
+            startActivity(intent);
+            // This above line close correctly
+        }
 
 }
 

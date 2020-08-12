@@ -106,13 +106,14 @@ public class PurchaseHistory extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(PurchaseHistory.this,Dashboard.class);
                 startActivity(intent);
+                finish();
 
             }
 
 
         });
 
-        callCart = findViewById(R.id.backCartActivity);
+        /*callCart = findViewById(R.id.backCartActivity);
 
         callCart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +124,7 @@ public class PurchaseHistory extends AppCompatActivity {
             }
 
 
-        });
+        });*/
 
 
 
@@ -200,6 +201,14 @@ public class PurchaseHistory extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Intent intent = new Intent(this,Dashboard.class);
+        startActivity(intent);
+        // This above line close correctly
     }
 
 

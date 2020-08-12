@@ -168,6 +168,7 @@ public class ProductDetails extends AppCompatActivity {
                                                 AlertDialog dialog = builder.create();
                                                 dialog.show();
 
+
                                             }
                                         });
 
@@ -222,5 +223,12 @@ public class ProductDetails extends AppCompatActivity {
         }
 
 
+    }
+    @Override
+    public void onBackPressed() {
+
+        Intent intent = new Intent(this,Dashboard.class);
+        startActivity(intent);
+        // This above line close correctly
     }
 }

@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="10dp"
-        android:layout_above="@+id/backDashboard">
+        android:layout_above="@+id/buttons">
 
     </ListView>
 
@@ -60,18 +60,6 @@
             android:background="#eaf3e3">
 
 
-            <Button
-                android:id="@+id/backCartActivity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/round_btn_bg"
-                android:fontFamily="@font/raleway_semibold"
-                android:text="Back"
-                android:textColor="@android:color/white"
-                android:textSize="20dp" />
 
 
             <Button

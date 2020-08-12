@@ -162,6 +162,7 @@ public class CartActivity extends AppCompatActivity {
             public void onClick (View v){
 
                 MakePayment();
+
             }
 
         });
@@ -325,5 +326,11 @@ public class CartActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    @Override
+    public void onBackPressed() {
 
+        Intent intent = new Intent(this,Dashboard.class);
+        startActivity(intent);
+        // This above line close correctly
+    }
 }

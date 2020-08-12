@@ -59,8 +59,10 @@ public class UpdateProduct extends AppCompatActivity {
         productPrice = (TextView)findViewById(R.id.price_details);
         productId = (TextView)findViewById(R.id.productID);
         addToCartButton = (Button)findViewById(R.id.addToCart_button1);
-        goCart = (Button)findViewById(R.id.toCart1);
-        goScan = (Button)findViewById(R.id.backScan1);
+        //goCart = (Button)findViewById(R.id.toCart1);
+        //goScan = (Button)findViewById(R.id.backScan1);
+
+
 
         id.addValueEventListener(new ValueEventListener() {
             @Override
