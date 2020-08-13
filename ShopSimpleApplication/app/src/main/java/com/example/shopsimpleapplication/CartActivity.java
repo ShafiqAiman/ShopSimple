@@ -162,6 +162,7 @@ public class CartActivity extends AppCompatActivity {
             public void onClick (View v){
 
                 MakePayment();
+
             }
 
         });
@@ -224,6 +225,7 @@ public class CartActivity extends AppCompatActivity {
                         intent.putExtra("count",String.valueOf(childCount));
                         intent.putExtra("CName",CName);
                         intent.putExtra("CPhone",a);
+                        Toast.makeText(CartActivity.this, userId, Toast.LENGTH_SHORT).show();
                         //m = 0;
                         startActivity(intent);
                         Cart.removeValue();
@@ -273,26 +275,30 @@ public class CartActivity extends AppCompatActivity {
     private void loadCart(){
         adapter = new FirebaseRecyclerAdapter<com.example.shopsimpleapplication.Model.Cart, CartViewHolder>(com.example.shopsimpleapplication.Model.Cart.class, R.layout.cart_items_layout, CartViewHolder.class, Cart) {
             @Override
-            protected void populateViewHolder(CartViewHolder cartViewHolder, final com.example.shopsimpleapplication.Model.Cart cart, final int i) {
-                cartViewHolder.productNAME.setText(cart.getName());
-                cartViewHolder.productPRICE.setText("RM "+cart.getPrice());
-                cartViewHolder.productQUANTITY.setText(cart.getQuantity());
+            protected void populateViewHolder(CartViewHolder cartViewHolder, final com.example.shopsimpleapplication.Model.Cart cart, int i) {
 
-                Double DProductPrice = ((Double.valueOf(cart.getPrice()))) * (Double.valueOf(cart.getQuantity()));
-                TotalPrice = TotalPrice + DProductPrice;
-                DecimalFormat df2 = new DecimalFormat("#,###,##0.00");
 
                 if (m < childCount){
+
+                    cartViewHolder.productNAME.setText(cart.getName());
+                    cartViewHolder.productPRICE.setText("RM "+cart.getPrice());
+                    cartViewHolder.productQUANTITY.setText(cart.getQuantity());
+
+                    DecimalFormat df2 = new DecimalFormat("#,###,##0.00");
+
                     PIDArray[m] = cart.getId();
                     PNameArray[m] = cart.getName();
                     PPriceArray[m] = cart.getPrice();
                     PQuantityArray[m] = cart.getQuantity();
 
+                    Double DProductPrice = ((Double.valueOf(cart.getPrice()))) * (Double.valueOf(cart.getQuantity()));
+                    TotalPrice = TotalPrice + DProductPrice;
                     ++m;
+
+                    TotalAmount.setText("Total Price = RM"+String.valueOf(df2.format(TotalPrice)));
                 }
 
 
-                TotalAmount.setText("Total Price = RM"+String.valueOf(df2.format(TotalPrice)));
                 final com.example.shopsimpleapplication.Model.Cart local = cart;
 
                 cartViewHolder.setItemClickListener(new ItemClickListener() {
@@ -301,6 +307,7 @@ public class CartActivity extends AppCompatActivity {
                         Intent update = new Intent(CartActivity.this, UpdateProduct.class);
                         update.putExtra("ID",cart.getId());
                         update.putExtra("CPhone1",a);
+                        update.putExtra("quantity",cart.getQuantity());
                         startActivity(update);
                     }
                 });
@@ -319,10 +326,19 @@ public class CartActivity extends AppCompatActivity {
                     }
                 });
 
+
             }
+
         };
         recyclerView.setAdapter(adapter);
+
     }
 
+    @Override
+    public void onBackPressed() {
 
+        Intent intent = new Intent(this,Dashboard.class);
+        startActivity(intent);
+        // This above line close correctly
+    }
 }

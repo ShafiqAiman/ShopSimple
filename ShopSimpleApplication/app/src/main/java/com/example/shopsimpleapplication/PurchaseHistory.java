@@ -66,7 +66,7 @@ public class PurchaseHistory extends AppCompatActivity {
     FirebaseStorage fStorage;
     FirebaseDatabase database;
     String userId;
-    Button callDash;
+    Button callDash, callCart;
     ListView myPDFListView;
     DatabaseReference databaseReference,Receipts;
     List<uploadPDF> uploadPDFS;
@@ -106,11 +106,25 @@ public class PurchaseHistory extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(PurchaseHistory.this,Dashboard.class);
                 startActivity(intent);
+                finish();
 
             }
 
 
         });
+
+        /*callCart = findViewById(R.id.backCartActivity);
+
+        callCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PurchaseHistory.this,CartActivity.class);
+                startActivity(intent);
+
+            }
+
+
+        });*/
 
 
 
@@ -188,6 +202,15 @@ public class PurchaseHistory extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+
+        Intent intent = new Intent(this,Dashboard.class);
+        startActivity(intent);
+        // This above line close correctly
+    }
+
 
 
 }

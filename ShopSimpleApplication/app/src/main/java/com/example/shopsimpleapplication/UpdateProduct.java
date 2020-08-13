@@ -33,6 +33,7 @@ public class UpdateProduct extends AppCompatActivity {
     DatabaseReference id, order;
     String pid = "";
     String phoneNo = "";
+    String quantity = "";
 
     private Button addToCartButton,goCart,goScan;
     private ImageView productImage;
@@ -50,6 +51,7 @@ public class UpdateProduct extends AppCompatActivity {
         order = database.getReference("Cart");
         pid = getIntent().getStringExtra("ID");
         phoneNo = getIntent().getStringExtra("CPhone1");
+        quantity = getIntent().getStringExtra("quantity");
 
         numberButton = (ElegantNumberButton)findViewById(R.id.number_Btn1);
         productImage = (ImageView)findViewById(R.id.image_details);
@@ -57,8 +59,10 @@ public class UpdateProduct extends AppCompatActivity {
         productPrice = (TextView)findViewById(R.id.price_details);
         productId = (TextView)findViewById(R.id.productID);
         addToCartButton = (Button)findViewById(R.id.addToCart_button1);
-        goCart = (Button)findViewById(R.id.toCart1);
-        goScan = (Button)findViewById(R.id.backScan1);
+        //goCart = (Button)findViewById(R.id.toCart1);
+        //goScan = (Button)findViewById(R.id.backScan1);
+
+
 
         id.addValueEventListener(new ValueEventListener() {
             @Override
@@ -74,6 +78,7 @@ public class UpdateProduct extends AppCompatActivity {
                         productPrice.setText("RM "+product.getPrice());
                         productId.setText(product.getId());
 
+                        numberButton.setNumber(quantity);
 
                         addToCartButton.setOnClickListener(new View.OnClickListener() {
                             @Override

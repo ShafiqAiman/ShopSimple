@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity {
 
@@ -28,7 +29,7 @@ public class Login extends AppCompatActivity {
     EditText resetMail;
     Button callSignUp, callDashboard, forgotPassBtn;
     FirebaseAuth fAuth;
-
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,9 @@ public class Login extends AppCompatActivity {
 
                 //authenticate the user
 
+                //userId = fAuth.getCurrentUser().getUid();
+                //final FirebaseUser user = fAuth.getCurrentUser();
+
                 fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -78,7 +82,7 @@ public class Login extends AppCompatActivity {
                             startActivity(new Intent(getApplicationContext(),Dashboard.class));
 
                         }else{
-                            Toast.makeText(Login.this, "Error" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, "Error. Please verify your email." + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -151,4 +155,14 @@ public class Login extends AppCompatActivity {
     }
 
     //private void startActivity(Intent intent) {
+
+    @Override
+    public void onBackPressed() {
+
+        //android.os.Process.killProcess(android.os.Process.myPid());
+        // This above line close correctly
+        Login.this.finish();
+        //System.exit(0);
+
+    }
     }

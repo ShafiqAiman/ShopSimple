@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.shopsimpleapplication"
-        minSdkVersion 17
+        minSdkVersion 21
         targetSdkVersion 29
         multiDexEnabled true
         versionCode 1
@@ -53,6 +53,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    //regex
+
 
 
     annotationProcessor 'androidx.room:room-compiler:2.2.0-rc01'

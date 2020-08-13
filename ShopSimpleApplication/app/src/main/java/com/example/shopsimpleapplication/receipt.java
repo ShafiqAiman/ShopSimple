@@ -77,10 +77,10 @@ public class receipt extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_receipt);
+        //setContentView(R.layout.activity_receipt);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        createButton = findViewById(R.id.create_Button);
+        //createButton = findViewById(R.id.create_Button);
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         fStorage = FirebaseStorage.getInstance();
@@ -113,6 +113,8 @@ public class receipt extends AppCompatActivity {
         CName = intent.getStringExtra("CName");
         CPhone = intent.getStringExtra("CPhone");
 
+        //Toast.makeText(receipt.this, CName, Toast.LENGTH_SHORT).show();
+
         String str = pID+System.getProperty("line.separator")+pName+System.getProperty("line.separator");
 
 
@@ -142,7 +144,7 @@ public class receipt extends AppCompatActivity {
         Paint myPaint = new Paint();
         Paint titlePaint = new Paint();
 
-        PdfDocument.PageInfo myPageInfo1 = new PdfDocument.PageInfo.Builder(2000, 2010, 1).create();
+        PdfDocument.PageInfo myPageInfo1 = new PdfDocument.PageInfo.Builder(2000, 6000, 1).create();
         PdfDocument.Page myPage1 = myPdfDocument.startPage(myPageInfo1);
         Canvas canvas = myPage1.getCanvas();
 
@@ -223,14 +225,15 @@ public class receipt extends AppCompatActivity {
 
         //selectPDFFile();
 
-        uploadPDFFile(file);
+
 
         Intent intent = new Intent(receipt.this, PurchaseHistory.class);
         startActivity(intent);
 
+        uploadPDFFile(file);
 
         Toast.makeText(receipt.this, "Receipt Downloaded", Toast.LENGTH_SHORT).show();
-        Toast.makeText(receipt.this, "" + CName, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(receipt.this, "" + CName, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -240,7 +243,7 @@ public class receipt extends AppCompatActivity {
         dateObj = new Date();
 
         dateFormat = new SimpleDateFormat("ddMMyy");
-        z = CPhone + "_" + dateFormat.format(dateObj);
+        z = "INVOICE" + "_" + dateFormat.format(dateObj);
         a = dateFormat.format(dateObj);
         dateFormat = new SimpleDateFormat("HHmmss");
         time = dateFormat.format(dateObj);
@@ -258,7 +261,7 @@ public class receipt extends AppCompatActivity {
 
                         dateFormat = new SimpleDateFormat("ddMMyy");
                         x = CPhone + "_" + dateFormat.format(dateObj);
-                        uploadPDF uploadPDF = new uploadPDF( a + "_" + time + ".pdf",url.toString());
+                        uploadPDF uploadPDF = new uploadPDF( "INVOICE_"+ a + "_" + time + ".pdf",url.toString());
                         databaseReference.child(CPhone).child(databaseReference.push().getKey()).setValue(uploadPDF);
                     }
                 }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

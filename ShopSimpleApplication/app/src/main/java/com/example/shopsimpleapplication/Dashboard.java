@@ -2,9 +2,11 @@ package com.example.shopsimpleapplication;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,42 +43,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         setContentView(R.layout.activity_dashboard);
 
 
-        /*callScan = findViewById(R.id.toScan);
-
-        callScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View vi) {
-                Intent intent = new Intent(Dashboard.this, ProductDetails.class);
-                startActivity(intent);
-
-            }
-        });
-
-        callCart = findViewById(R.id.toCart);
-
-        callCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View vi) {
-                Intent intent = new Intent(Dashboard.this, CartActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
-        //callReceipt = findViewById(R.id.receiptgen);
-
-        callHistory = findViewById(R.id.receiptgen);
-
-        callHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Dashboard.this, PurchaseHistory.class);
-                startActivity(intent);
-
-            }
-
-
-        });*/
 
         //define cards
         scanner = (CardView) findViewById(R.id.toScan);
@@ -110,32 +76,27 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         verifyText = findViewById(R.id.verifyText);
 
         userId = fAuth.getCurrentUser().getUid();
+        Toast.makeText(Dashboard.this, userId, Toast.LENGTH_SHORT).show();
         final FirebaseUser user = fAuth.getCurrentUser();
 
         if (!user.isEmailVerified()) {
-            verifyText.setVisibility(View.VISIBLE);
-            verifyBtn.setVisibility(View.VISIBLE);
-
-            verifyBtn.setOnClickListener(new View.OnClickListener() {
+            //Toast.makeText(Dashboard.this, "Please verify your email", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(Dashboard.this);
+            builder.setMessage("Please verify your email to continue shopping ");
+            //Toast.makeText(MainActivity.this, y, Toast.LENGTH_SHORT).show();
+            builder.setTitle("Email Verification");
+            builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(final View v) {
-
-                    user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(v.getContext(), "Verification Email has been sent.", Toast.LENGTH_SHORT).show();
-
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("tag", "onFailure: Email not sent" + e.getMessage());
-                        }
-                    });
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent = new Intent(Dashboard.this,Login.class);
+                    startActivity(intent);
                 }
             });
+            AlertDialog dialog = builder.create();
+            dialog.show();
 
         }
+
     }
 
     @Override
@@ -157,7 +118,13 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         /*public void receiptgen(View v){
             startActivity(new Intent(getApplicationContext(),PurchaseHistory.class));
         }*/
+        @Override
+        public void onBackPressed() {
 
+            Intent intent = new Intent(this,Dashboard.class);
+            startActivity(intent);
+            // This above line close correctly
+        }
 
 }
 

@@ -27,6 +27,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SignUp extends AppCompatActivity {
 
@@ -88,6 +90,19 @@ public class SignUp extends AppCompatActivity {
                 if(password.length() < 6){
                     regPassword.setError("Password must be more than 6 characters.");
                     return;
+                }
+
+                String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+
+                if(!email.matches(regex)){
+                    regEmail.setError("Email does not exist");
+                    return;
+                }
+
+                String pwordValid = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$";
+
+                if(!password.matches(pwordValid)){
+                    regPassword.setError("Password must be combination of characters");
                 }
 
                 //register user to firebase
