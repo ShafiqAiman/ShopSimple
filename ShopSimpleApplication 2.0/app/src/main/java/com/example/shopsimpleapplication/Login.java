@@ -161,7 +161,7 @@ public class Login extends AppCompatActivity {
 
         //android.os.Process.killProcess(android.os.Process.myPid());
         // This above line close correctly
-        Login.this.finish();
+        //Login.this.finish();
         //System.exit(0);
 
     }

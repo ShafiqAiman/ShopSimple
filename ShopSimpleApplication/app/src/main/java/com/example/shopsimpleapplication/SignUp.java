@@ -103,6 +103,7 @@ public class SignUp extends AppCompatActivity {
 
                 if(!password.matches(pwordValid)){
                     regPassword.setError("Password must be combination of characters");
+                    return;
                 }
 
                 //register user to firebase

@@ -78,7 +78,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         userId = fAuth.getCurrentUser().getUid();
         final FirebaseUser user = fAuth.getCurrentUser();
 
-        if (!user.isEmailVerified()) {
+        /*if (!user.isEmailVerified()) {
             //Toast.makeText(Dashboard.this, "Please verify your email", Toast.LENGTH_SHORT).show();
             AlertDialog.Builder builder = new AlertDialog.Builder(Dashboard.this);
             builder.setMessage("Please verify your email to continue shopping ");
@@ -94,7 +94,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             AlertDialog dialog = builder.create();
             dialog.show();
 
-        }
+        }*/
 
     }
 

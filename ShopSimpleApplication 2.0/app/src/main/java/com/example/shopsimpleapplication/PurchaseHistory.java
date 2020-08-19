@@ -106,7 +106,7 @@ public class PurchaseHistory extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(PurchaseHistory.this,Dashboard.class);
                 startActivity(intent);
-                finish();
+
 
             }
 

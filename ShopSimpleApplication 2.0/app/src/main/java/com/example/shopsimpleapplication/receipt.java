@@ -223,11 +223,12 @@ public class receipt extends AppCompatActivity {
 
         //selectPDFFile();
 
-        uploadPDFFile(file);
+
 
         Intent intent = new Intent(receipt.this, PurchaseHistory.class);
         startActivity(intent);
 
+        uploadPDFFile(file);
 
         Toast.makeText(receipt.this, "Receipt Downloaded", Toast.LENGTH_SHORT).show();
         //Toast.makeText(receipt.this, "" + CName, Toast.LENGTH_SHORT).show();
