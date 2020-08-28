@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity {
 
+    //Variables
     TextInputLayout  regEmail, regPassword;
     EditText resetMail;
     Button callSignUp, callDashboard, forgotPassBtn;
@@ -44,7 +45,7 @@ public class Login extends AppCompatActivity {
 
 
 
-
+        // to the dashboard page
         callDashboard = findViewById(R.id.loginBtn);
 
         callDashboard.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +55,7 @@ public class Login extends AppCompatActivity {
                 String email = regEmail.getEditText().getText().toString();
                 String password = regPassword.getEditText().getText().toString();
 
+                //checking of user credentials
                 if(TextUtils.isEmpty(email)){
                     regEmail.setError("Email is Required.");
                     return;
@@ -65,15 +67,13 @@ public class Login extends AppCompatActivity {
                 }
 
                 if(password.length() < 6){
-                    regPassword.setError("Password must be more than 6 characters.");
+                    regPassword.setError("Incorrect Email or Password.");
                     return;
                 }
 
+
+
                 //authenticate the user
-
-                //userId = fAuth.getCurrentUser().getUid();
-                //final FirebaseUser user = fAuth.getCurrentUser();
-
                 fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -88,12 +88,11 @@ public class Login extends AppCompatActivity {
                     }
                 });
 
-                //Intent intent = new Intent(Login.this, Dashboard.class);
-                //startActivity(intent);
             }
 
         });
 
+        //to sign up page
         callSignUp = findViewById(R.id.signup_screen);
 
         callSignUp.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +104,7 @@ public class Login extends AppCompatActivity {
 
         });
 
+        //reset password link
         forgotPassBtn = findViewById(R.id.forgotPass_btn);
 
         forgotPassBtn.setOnClickListener(new View.OnClickListener(){
@@ -143,7 +143,7 @@ public class Login extends AppCompatActivity {
                 passwordResetDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //redirect bac to login n close dialog
+                        //redirect back to login n close dialog
                     }
                 });
 
@@ -154,15 +154,14 @@ public class Login extends AppCompatActivity {
 
     }
 
-    //private void startActivity(Intent intent) {
+
 
     @Override
     public void onBackPressed() {
 
-        //android.os.Process.killProcess(android.os.Process.myPid());
+
         // This above line close correctly
         Login.this.finish();
-        //System.exit(0);
 
     }
     }

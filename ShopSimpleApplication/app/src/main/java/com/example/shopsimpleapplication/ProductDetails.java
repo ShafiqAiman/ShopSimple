@@ -34,6 +34,8 @@ import com.google.zxing.integration.android.IntentResult;
 import com.squareup.picasso.Picasso;
 
 public class ProductDetails extends AppCompatActivity {
+
+    //Variables
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     String userId;
@@ -42,7 +44,7 @@ public class ProductDetails extends AppCompatActivity {
     String y = "";
     String a = "";
 
-    private Button addToCartButton,goCart,goScan;
+    private Button addToCartButton;
     private ImageView productImage;
     private ElegantNumberButton numberButton;
     private TextView productPrice, productName, productId;
@@ -54,23 +56,24 @@ public class ProductDetails extends AppCompatActivity {
         setContentView(R.layout.activity_product_details);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        //declaration for database
         database = FirebaseDatabase.getInstance();
         id = database.getReference("Product");
         order = database.getReference("Cart");
-
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
-
         userId = fAuth.getCurrentUser().getUid();
 
+        //layout
         numberButton = (ElegantNumberButton)findViewById(R.id.number_btn);
         productImage = (ImageView)findViewById(R.id.product_image_details);
         productName = (TextView)findViewById(R.id.product_name_details);
         productPrice = (TextView)findViewById(R.id.product_price_details);
         productId = (TextView)findViewById(R.id.product_ID);
         addToCartButton = (Button)findViewById(R.id.add_to_cart_button);
-        //goCart = (Button)findViewById(R.id.toCart);
-        //goScan = (Button)findViewById(R.id.backScan);
+
+
+
         scanCode();
 
         DocumentReference documentReference = fStore.collection("users").document(userId);
@@ -83,30 +86,11 @@ public class ProductDetails extends AppCompatActivity {
             }
         });
 
-        /*goCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ProductDetails.this, CartActivity.class);
-                startActivity(intent);
-
-            }
-
-
-        });
-
-        goScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                scanCode();
-
-            }
-
-
-        });*/
 
 
     }
 
+    // to capture barcode data
     private void scanCode(){
 
         IntentIntegrator integrator = new IntentIntegrator(ProductDetails.this);
@@ -117,12 +101,14 @@ public class ProductDetails extends AppCompatActivity {
         integrator.initiateScan();
 
     }
+
+    //to check if barcode exists and retrieve product details based on the barcode
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null){
             if(result.getContents()!=null){
-                //String x = result.getContents();
+
                 y = result.getContents();
                 if(!y.isEmpty()){
                     id.addValueEventListener(new ValueEventListener() {
@@ -144,14 +130,10 @@ public class ProductDetails extends AppCompatActivity {
                                             @Override
                                             public void onClick(View v) {
                                                 Cart cart = new Cart(product.getName(),product.getPrice(), numberButton.getNumber(),product.getId());
-                                                //Toast.makeText(ProductDetails.this,a,Toast.LENGTH_SHORT).show();
                                                 order.child(a).child(y).setValue(cart);
                                                 Toast.makeText(ProductDetails.this,"Item is added",Toast.LENGTH_SHORT).show();
 
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(ProductDetails.this);
-                                                //builder.setMessage("To scan more products press SCANNER button.");
-                                                //builder.setMessage("To proceed to shopping cart press CART button.");
-                                                //Toast.makeText(MainActivity.this, y, Toast.LENGTH_SHORT).show();
                                                 builder.setTitle("ITEM IS ADDED");
                                                 builder.setPositiveButton("Continue Scanning Products", new DialogInterface.OnClickListener() {
                                                     @Override
@@ -184,7 +166,6 @@ public class ProductDetails extends AppCompatActivity {
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(ProductDetails.this);
                                 builder.setMessage("Product cannot be found in database.");
-                                //Toast.makeText(MainActivity.this, y, Toast.LENGTH_SHORT).show();
                                 builder.setTitle("Scanning Result");
                                 builder.setPositiveButton("Scan Again", new DialogInterface.OnClickListener() {
                                     @Override
@@ -209,8 +190,6 @@ public class ProductDetails extends AppCompatActivity {
                         }
                     });
                 }
-
-                //Compare(productid);
 
 
             }

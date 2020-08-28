@@ -49,6 +49,7 @@ import java.text.DecimalFormat;
 
 public class CartActivity extends AppCompatActivity {
 
+    //Variables
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private Button pay,ClearAll;
@@ -98,7 +99,7 @@ public class CartActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        //pay = (Button) findViewById(R.id.payBtn);
+
         TotalAmount = (TextView) findViewById(R.id.total_price);
 
         fAuth = FirebaseAuth.getInstance();
@@ -173,6 +174,7 @@ public class CartActivity extends AppCompatActivity {
 
     }
 
+    //linking to paypal sandbox
     private void configPayPal() {
 
         config = new PayPalConfiguration()
@@ -214,8 +216,7 @@ public class CartActivity extends AppCompatActivity {
                         Toast.makeText(this, "Payment Successful", Toast.LENGTH_LONG).show();
 
                         DecimalFormat df = new DecimalFormat("#,###,##0.00");
-                        //priceTotal = df.format(TotalPrice);
-                        //Double priceTotal = Double.parseDouble(String.valueOf(TotalPrice));
+
                         Intent intent = new Intent(this,receipt.class);
                         intent.putExtra(EXTRA_NUMBER, df.format(TotalPrice));
                         intent.putExtra("pID",PIDArray);
@@ -271,7 +272,7 @@ public class CartActivity extends AppCompatActivity {
         }
     }
 
-
+    // send cart details to firebase
     private void loadCart(){
         adapter = new FirebaseRecyclerAdapter<com.example.shopsimpleapplication.Model.Cart, CartViewHolder>(com.example.shopsimpleapplication.Model.Cart.class, R.layout.cart_items_layout, CartViewHolder.class, Cart) {
             @Override

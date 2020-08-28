@@ -1,7 +1,5 @@
 package com.example.shopsimpleapplication;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -9,26 +7,19 @@ import androidx.cardview.widget.CardView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
+
 
 public class Dashboard extends AppCompatActivity implements View.OnClickListener{
 
-    Button callLogOut, verifyBtn, callScan, callCart, callHistory;
+    Button  verifyBtn;
     CardView scanner, cart, receipt, logout;
     TextView verifyText;
     FirebaseAuth fAuth;
@@ -76,14 +67,12 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         verifyText = findViewById(R.id.verifyText);
 
         userId = fAuth.getCurrentUser().getUid();
-        Toast.makeText(Dashboard.this, userId, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(Dashboard.this, userId, Toast.LENGTH_SHORT).show();
         final FirebaseUser user = fAuth.getCurrentUser();
 
         if (!user.isEmailVerified()) {
-            //Toast.makeText(Dashboard.this, "Please verify your email", Toast.LENGTH_SHORT).show();
             AlertDialog.Builder builder = new AlertDialog.Builder(Dashboard.this);
             builder.setMessage("Please verify your email to continue shopping ");
-            //Toast.makeText(MainActivity.this, y, Toast.LENGTH_SHORT).show();
             builder.setTitle("Email Verification");
             builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                 @Override
@@ -115,9 +104,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
     }
 
-        /*public void receiptgen(View v){
-            startActivity(new Intent(getApplicationContext(),PurchaseHistory.class));
-        }*/
+
         @Override
         public void onBackPressed() {
 
@@ -129,6 +116,3 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 }
 
 
-        /*FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        finish();*/

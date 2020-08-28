@@ -15,6 +15,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+// to create the splashscreen
 public class MainActivity extends AppCompatActivity {
 
     private static int SPLASH_SCREEN = 5000;

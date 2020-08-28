@@ -41,8 +41,6 @@ public class SignUp extends AppCompatActivity {
     FirebaseFirestore fStore;
     String userID;
 
-    //private DatabaseReference userRef;
-
 
 
     @Override
@@ -64,11 +62,7 @@ public class SignUp extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
-        /*if(fAuth.getCurrentUser() != null){
-            startActivity(new Intent(getApplicationContext(),Dashboard.class));
-            finish();
-        }*/
-
+        //to register user account
         registerBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -77,6 +71,7 @@ public class SignUp extends AppCompatActivity {
                 final String fullName = regName.getEditText().getText().toString();
                 final String phoneNo = regPhoneNo.getEditText().getText().toString();
 
+                //User details checking
                 if(TextUtils.isEmpty(email)){
                     regEmail.setError("Email is Required.");
                     return;
@@ -159,6 +154,7 @@ public class SignUp extends AppCompatActivity {
 
             });
 
+        //goes to the Login page
         callLogIn = findViewById(R.id.login_btn);
 
         callLogIn.setOnClickListener(new View.OnClickListener() {

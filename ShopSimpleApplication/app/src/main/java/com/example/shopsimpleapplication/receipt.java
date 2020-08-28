@@ -49,7 +49,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class receipt extends AppCompatActivity {
-    Button createButton;
+
+    //Variables
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     FirebaseDatabase database;
@@ -66,9 +67,7 @@ public class receipt extends AppCompatActivity {
     DateFormat dateFormat;
     int pageWidth = 2000;
     public static String CName, CPhone;
-    //RecyclerView recyclerView;
-    //RecyclerView.LayoutManager layoutManager;
-    //FirebaseRecyclerAdapter<com.example.shopsimpleapplication.Model.Receipt, CartViewHolder>adapter;
+
 
     StorageReference storageReference;
     DatabaseReference databaseReference;
@@ -77,10 +76,10 @@ public class receipt extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_receipt);
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        //createButton = findViewById(R.id.create_Button);
+
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         fStorage = FirebaseStorage.getInstance();
@@ -95,13 +94,12 @@ public class receipt extends AppCompatActivity {
         scaledBitmap = Bitmap.createScaledBitmap(bmp,550, 500,false);
 
 
-        //get Customer Name and Phone Number
-
 
         //to get total price from cart
         Intent intent = getIntent();
         String totalPrice = intent.getStringExtra(CartActivity.EXTRA_NUMBER);
 
+        //to get each product details, quantity and price
         String[] pID = intent.getStringArrayExtra("pID");
         String[] pName = intent.getStringArrayExtra("pName");
         String[] pPrice = intent.getStringArrayExtra("pPrice");
@@ -110,22 +108,19 @@ public class receipt extends AppCompatActivity {
         String count = intent.getStringExtra("count");
         int Count = Integer.parseInt(count);
 
+        // to retrieve user Name and Phone number from Firebase
         CName = intent.getStringExtra("CName");
         CPhone = intent.getStringExtra("CPhone");
 
-        //Toast.makeText(receipt.this, CName, Toast.LENGTH_SHORT).show();
 
         String str = pID+System.getProperty("line.separator")+pName+System.getProperty("line.separator");
-
-
-
 
 
 
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
 
-        //load CartDetails();
+
         createPDF(totalPrice, pID, pName, pPrice, pQuantity, Count, CPhone, CName);
 
 
@@ -134,6 +129,7 @@ public class receipt extends AppCompatActivity {
 
 
 
+    // To draw and create receipt in PDF format
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void createPDF(final String totalPrice, final String[] pID, final String[] pName, final String[] pPrice, final String[] pQuantity, final int count, String CPhone, String CName) {
@@ -223,7 +219,6 @@ public class receipt extends AppCompatActivity {
 
         myPdfDocument.close();
 
-        //selectPDFFile();
 
         uploadPDFFile(file);
 
@@ -232,12 +227,12 @@ public class receipt extends AppCompatActivity {
         startActivity(intent);
 
 
-
         Toast.makeText(receipt.this, "Receipt Downloaded", Toast.LENGTH_SHORT).show();
-        //Toast.makeText(receipt.this, "" + CName, Toast.LENGTH_SHORT).show();
+
     }
 
 
+    // to upload file to firebase storage
 
     private void uploadPDFFile(File data) {
 

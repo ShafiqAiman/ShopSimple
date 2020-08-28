@@ -35,7 +35,7 @@ public class UpdateProduct extends AppCompatActivity {
     String phoneNo = "";
     String quantity = "";
 
-    private Button addToCartButton,goCart,goScan;
+    private Button addToCartButton;
     private ImageView productImage;
     private ElegantNumberButton numberButton;
     private TextView productPrice, productName, productId;
@@ -59,8 +59,6 @@ public class UpdateProduct extends AppCompatActivity {
         productPrice = (TextView)findViewById(R.id.price_details);
         productId = (TextView)findViewById(R.id.productID);
         addToCartButton = (Button)findViewById(R.id.addToCart_button1);
-        //goCart = (Button)findViewById(R.id.toCart1);
-        //goScan = (Button)findViewById(R.id.backScan1);
 
 
 
@@ -84,7 +82,6 @@ public class UpdateProduct extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
 
-                                //order.child(phoneNo).child(pid).removeValue();
 
                                 Cart cart = new Cart(product.getName(),product.getPrice(), numberButton.getNumber(),product.getId());
                                 order.child(phoneNo).child(pid).setValue(cart);

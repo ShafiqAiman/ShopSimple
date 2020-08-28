@@ -4,26 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Layout;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,43 +27,27 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.paypal.android.sdk.payments.PayPalAuthorization;
-import com.paypal.android.sdk.payments.PayPalConfiguration;
-import com.paypal.android.sdk.payments.PayPalFuturePaymentActivity;
-import com.paypal.android.sdk.payments.PayPalPayment;
-import com.paypal.android.sdk.payments.PayPalService;
-import com.paypal.android.sdk.payments.PaymentActivity;
-import com.paypal.android.sdk.payments.PaymentConfirmation;
 
-import org.json.JSONException;
-
-import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.w3c.dom.Text;
+
 
 public class PurchaseHistory extends AppCompatActivity {
 
+    //Variables
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     FirebaseStorage fStorage;
     FirebaseDatabase database;
     String userId;
-    Button callDash, callCart;
+    Button callDash;
     ListView myPDFListView;
     DatabaseReference databaseReference,Receipts;
     List<uploadPDF> uploadPDFS;
     StorageReference storageReference;
-    Date dateObj;
-    DateFormat dateFormat;
-
     public static String CustPhone,a;
 
 
@@ -84,7 +58,6 @@ public class PurchaseHistory extends AppCompatActivity {
         setContentView(R.layout.activity_purchase_history);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        dateObj = new Date();
 
         myPDFListView = (ListView)findViewById(R.id.myListView);
         uploadPDFS = new ArrayList<>();
@@ -99,6 +72,7 @@ public class PurchaseHistory extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("receipts");
 
 
+        // to the dashboard page
         callDash = findViewById(R.id.backDashboard);
 
         callDash.setOnClickListener(new View.OnClickListener() {
@@ -113,23 +87,11 @@ public class PurchaseHistory extends AppCompatActivity {
 
         });
 
-        /*callCart = findViewById(R.id.backCartActivity);
-
-        callCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PurchaseHistory.this,CartActivity.class);
-                startActivity(intent);
-
-            }
-
-
-        });*/
 
 
 
-        //viewAllFiles();
 
+        //to display all user receipts
         DocumentReference documentReference = fStore.collection("users").document(userId);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
@@ -168,6 +130,8 @@ public class PurchaseHistory extends AppCompatActivity {
 
     }
 
+
+    //to fetch all receipts for user
     private void viewAllFiles() {
 
         databaseReference = FirebaseDatabase.getInstance().getReference("receipts").child(CustPhone);
