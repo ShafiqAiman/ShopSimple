@@ -1,2 +1,0 @@
-include ':app'
-rootProject.name = "Add To Cart"
