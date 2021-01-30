@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                          Intent intent = new Intent(MainActivity.this,Login.class);
                          startActivity(intent);
                          finish();
-
+                         // hahahahaha my name is huwaida this is my code please lemme know if this code is fine to execute validate password function
            }
 
             //private void startActivity(Intent intent) {
