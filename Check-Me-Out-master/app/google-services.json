@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "306889649308",
+    "firebase_url": "https://checkmeout-13519.firebaseio.com",
+    "project_id": "checkmeout-13519",
+    "storage_bucket": "checkmeout-13519.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306889649308:android:b7d036c89e55e59ddc9159",
+        "android_client_info": {
+          "package_name": "com.ruth.checkmeout"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "306889649308-8tll3f64o7qq9t8qb7bc6r49ura5e7a3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ruth.checkmeout",
+            "certificate_hash": "150b087f347ffe3e30ce9c42be64f10cf6b5e795"
+          }
+        },
+        {
+          "client_id": "306889649308-tt865j988llp2luph6gdsbkddufmb5d9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtya4Zg3fr6EZxysIHh664BqBgqXTTjM0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "306889649308-tt865j988llp2luph6gdsbkddufmb5d9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
